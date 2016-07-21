@@ -1,0 +1,7 @@
+{
+  "globalDependencies": {
+    "axios": "registry:dt/axios#0.9.1+20160629101425",
+    "material-ui": "registry:dt/material-ui#0.15.1+20160720000941",
+    "react-jsonschema-form": "registry:dt/react-jsonschema-form#0.30.1+20160720001748"
+  }
+}

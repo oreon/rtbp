@@ -1,0 +1,226 @@
+
+	
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+AppUser  , , 
+
+GET appUsers/id,   Find a  AppUser by id,   
+  userName ,  String   , User Name
+  password ,  String   , Password
+  enabled ,   Boolean   , Enabled
+  groups ,   Group    Array , Groups
+
+dateCreated,DateTime, Timestamp of creation
+createdBy, String, acfid of the user who created the record
+dateUpdated,DateTime, Timestamp of last update
+lastUpdatedBy, String, acfid of the user who last updated the record
+		
+
+PUT/PATCH AppUsers/<<AppUser>> , Edit existing AppUser,  
+POST  , Create new AppUser, 
+DELETE AppUsers/id  , Delete by id, 
+
+findByUserName,    Return unique AppUser for  given userName    , 
+
+findByPassword,    Find AppUsers containing  password   , 
+
+
+
+
+
+
+
+AppRole  , , 
+
+GET appRoles/id,   Find a  AppRole by id,   
+  name ,  String   , Name
+  groups ,   Group    Array , Groups
+
+dateCreated,DateTime, Timestamp of creation
+createdBy, String, acfid of the user who created the record
+dateUpdated,DateTime, Timestamp of last update
+lastUpdatedBy, String, acfid of the user who last updated the record
+		
+
+PUT/PATCH AppRoles/<<AppRole>> , Edit existing AppRole,  
+POST  , Create new AppRole, 
+DELETE AppRoles/id  , Delete by id, 
+
+findByName,    Return unique AppRole for  given name    , 
+
+
+
+
+
+
+Group  , , 
+
+GET groups/id,   Find a  Group by id,   
+  appUsers ,   AppUser    Array , App Users
+  appRoles ,   AppRole    Array , App Roles
+
+dateCreated,DateTime, Timestamp of creation
+createdBy, String, acfid of the user who created the record
+dateUpdated,DateTime, Timestamp of last update
+lastUpdatedBy, String, acfid of the user who last updated the record
+		
+
+PUT/PATCH Groups/<<Group>> , Edit existing Group,  
+POST  , Create new Group, 
+DELETE Groups/id  , Delete by id, 
+
+
+
+
+
+
+
+	
+
+Product  , , 
+
+GET products/id,   Find a  Product by id,   
+  name ,  String   , Name
+  price ,   Currency   , Price
+  image ,   imageFile   , Image
+  categorys ,   Category    Array , Categorys
+  displayTill ,   Date   , Display Till
+
+dateCreated,DateTime, Timestamp of creation
+createdBy, String, acfid of the user who created the record
+dateUpdated,DateTime, Timestamp of last update
+lastUpdatedBy, String, acfid of the user who last updated the record
+		
+
+PUT/PATCH Products/<<Product>> , Edit existing Product,  
+POST  , Create new Product, 
+DELETE Products/id  , Delete by id, 
+
+findByName,    Return unique Product for  given name    , 
+
+
+
+
+
+
+
+
+
+Category  , , 
+
+GET categorys/id,   Find a  Category by id,   
+  products ,   Product    Array , Products
+  name ,  String   , Name
+
+dateCreated,DateTime, Timestamp of creation
+createdBy, String, acfid of the user who created the record
+dateUpdated,DateTime, Timestamp of last update
+lastUpdatedBy, String, acfid of the user who last updated the record
+		
+
+PUT/PATCH Categorys/<<Category>> , Edit existing Category,  
+POST  , Create new Category, 
+DELETE Categorys/id  , Delete by id, 
+
+
+findByName,    Return unique Category for  given name    , 
+
+
+
+
+
+Customer  , , 
+
+GET customers/id,   Find a  Customer by id,   
+  firstName ,  String   , First Name
+  lastName ,  String   , Last Name
+  customerOrders ,   CustomerOrder    Array , Customer Orders
+  customerReviews ,   CustomerReview    Array , Customer Reviews
+  customerType ,   CustomerType   , Customer Type
+
+dateCreated,DateTime, Timestamp of creation
+createdBy, String, acfid of the user who created the record
+dateUpdated,DateTime, Timestamp of last update
+lastUpdatedBy, String, acfid of the user who last updated the record
+		
+
+PUT/PATCH Customers/<<Customer>> , Edit existing Customer,  
+POST  , Create new Customer, 
+DELETE Customers/id  , Delete by id, 
+
+findByFirstName,    Find Customers containing  firstName   , 
+
+findByLastName,    Find Customers containing  lastName   , 
+
+
+
+
+
+
+
+
+CustomerOrder  , , 
+
+GET customerOrders/id,   Find a  CustomerOrder by id,   
+  orderItems ,   OrderItem    Array , Order Items
+  customer ,   Customer   , Customer
+  notes ,  String   , Notes
+
+dateCreated,DateTime, Timestamp of creation
+createdBy, String, acfid of the user who created the record
+dateUpdated,DateTime, Timestamp of last update
+lastUpdatedBy, String, acfid of the user who last updated the record
+		
+
+PUT/PATCH CustomerOrders/<<CustomerOrder>> , Edit existing CustomerOrder,  
+POST  , Create new CustomerOrder, 
+DELETE CustomerOrders/id  , Delete by id, 
+
+
+
+findByNotes,    Find CustomerOrders containing  notes   , 
+
+
+
+
+
+Employee  , , 
+
+GET employees/id,   Find a  Employee by id,   
+  firstName ,  String   , First Name
+  lastName ,  String   , Last Name
+  active ,   Boolean   , Active
+  appUser ,   AppUser   , App User
+
+dateCreated,DateTime, Timestamp of creation
+createdBy, String, acfid of the user who created the record
+dateUpdated,DateTime, Timestamp of last update
+lastUpdatedBy, String, acfid of the user who last updated the record
+		
+
+PUT/PATCH Employees/<<Employee>> , Edit existing Employee,  
+POST  , Create new Employee, 
+DELETE Employees/id  , Delete by id, 
+
+findByFirstName,    Find Employees containing  firstName   , 
+
+findByLastName,    Find Employees containing  lastName   , 
+
+
+
+
+
+
+
+	
+
