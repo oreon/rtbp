@@ -7,32 +7,66 @@ import * as axios from 'axios';
 
 import Form from 'react-jsonschema-form';
 
+export class CustomerStore{
+
+//@observable  customers:any = [];
+
+}
+
+
+@observer
 export default class Customers extends React.Component<any, any> {
 
+  customerStore:CustomerStore 
+
   constructor(props) {
+    console.log("rcvd " + props.data.posts)
     super(props);
-    this.state = { customers: [] };
+   this.state = { customers: [] , next : '', prev : '', count: ''};
+    //this.customerStore = new CustomerStore();
   }
 
   componentDidMount() {
-    axios
-      .get('/api/v1/customers')
-      .then(response => {
-        let results = (response.data as any).results;
-        console.log(results);
-        this.setState({ customers: results });
-      });
+   //this.load(null);
   }
+
+
+  load(url:string){
+    /*
+
+     if(!url) url = '/api/v1/customers';
+     axios
+      .get(url)
+      .then(response => {
+        console.log(response);
+        let data:any = response.data 
+        console.log(data.results);
+        //this.customerStore.customers = results
+        this.setState({ customers: data.results,   
+           next : data.next, prev : data.previous, count: data.count});
+      });*/
+  }
+
+
 
 
   render() {
     return (
-      <CustomerList customers={this.state.customers}/>
+      <div className="panel">
+       
+        <CustomerList customers={this.props.data.posts}/>
+    
+        { (this.state.next != null) && 
+         <a  onClick={this.load.bind(this, this.state.next) }> Next </a> }
+       { (this.state.prev != null) && 
+         <a onClick={this.load.bind(this, this.state.prev) }> Prev </a> }
+         
+      </div>
     )
   }
 }
 
-
+//@observer
 export class CustomerList extends React.Component<any, any>{
 
   constructor(props) {
@@ -61,12 +95,11 @@ export class CustomerList extends React.Component<any, any>{
     }
     );
 
-
     return (
       <div>
         <button onClick={this.handleAdd.bind(this) }>Add</button>
 
-        <table >
+        <table  className="table-striped" >
           <tbody>
             <tr>
               <th>First Name</th>
@@ -82,8 +115,8 @@ export class CustomerList extends React.Component<any, any>{
   }
 }
 
+@observer
 export class Customer extends React.Component<any, any>{
-
 
   render() {
     return (
@@ -110,11 +143,11 @@ const customerSchema = {
 const onSubmit = ({formData}) => {
   if (!formData.id)
     axios.post('/api/v1/customers', formData)
-      .then(response => console.log(response))
+      .then(response =>    formData = {} )
       .catch(error => console.log(error));
   else {
     axios.patch('/api/v1/customers/' + formData.id, formData)
-      .then(response => console.log(response))
+      .then(response => {  formData = {}; console.log(response); })
       .catch(error => console.log(error));
   }
 
@@ -125,9 +158,11 @@ export class CustomerForm extends React.Component<any, any>{
 
   render() {
     return (
-      <Form schema={customerSchema}  formData={this.props.customer}
-        onSubmit={onSubmit}
-        />
+      <div className="panel panel-default">
+        <Form schema={customerSchema}  formData={this.props.customer}
+          onSubmit={onSubmit}
+          />
+      </div>
     );
   }
 }
