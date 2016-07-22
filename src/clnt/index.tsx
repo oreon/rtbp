@@ -24,6 +24,13 @@ class AppState {
     @observable is_loading = true
     @observable is_saving = false
 
+    @observable next = null;
+    @observable prev = null;
+    @observable count = 0;
+
+    @observable searchString = "";
+    
+
     load(url: string) {
         if (!url) url = '/api/v1/customers';
         axios
@@ -31,49 +38,55 @@ class AppState {
             .then(response => {
                 //console.log(response);
                 let data: any = response.data
-                //console.log(data.results);
-                //this.customerStore.customers = results
-
                 this.posts = data.results
                 this.is_loading = false
-                //this.setState({ customers: data.results,   
-                //    next : data.next, prev : data.previous, count: data.count});
+                this. next  = data.next, 
+                this.prev  = data.previous, 
+                this.count =  data.count;
             });
     }
 
     constructor() {
         this.load(null);
+        //this.bind(initAdd);
     }
 
     onSubmit(formData) {
         console.log("submitting " + formData);
         this.selectedPost = formData;
         console.log('selected entity is ' + this.selectedPost)
-        if (! (this.selectedPost as any).id)
+        let id = (this.selectedPost as any).id
+        if (!id )
             axios.post('/api/v1/customers', this.selectedPost)
-                .then(response => this.saveSuccess(response))
+                .then(response => this.saveSuccess(response, null))
                 .catch(error => console.log(error));
         else {
-            axios.patch('/api/v1/customers/' + (this.selectedPost as any).id, this.selectedPost)
-                .then(response => this.saveSuccess(response))
+            axios.patch('/api/v1/customers/' + id, this.selectedPost)
+                .then(response => this.saveSuccess(response, id))
                 .catch(error => console.log(error));
         }
     }
 
-    saveSuccess(response){
+    saveSuccess(response,id){
         this.is_saving = false
-        console.log(response.data)
-        //this.posts.unshift(response.data)
+        let entity = response.data;
+        console.log("saved " + entity.firstName + entity.id)
+        if(id)
+        this.posts.forEach((item, i) => { if (item.id == id)  this.posts[i] = entity });
+       
         this.selectedPost = {}
     }
 
 
-    addPost(object) {
+   public addPost = () => {
+
         this.is_saving = true;
+         this.selectedPost = {}
         //this.onSubmit();
     }
 
     initAdd(){
+        console.log("here " )
         this.selectedPost = {}
     }
 

@@ -9,9 +9,9 @@ import Form from 'react-jsonschema-form';
 
 import DevTools from 'mobx-react-devtools';
 
-export class CustomerStore{
+export class CustomerStore {
 
-//@observable  customers:any = [];
+  //@observable  customers:any = [];
 
 }
 
@@ -19,21 +19,21 @@ export class CustomerStore{
 @observer
 export default class Customers extends React.Component<any, any> {
 
-  customerStore:CustomerStore 
+  customerStore: CustomerStore
 
   constructor(props) {
     console.log("rcvd " + props.data.posts)
     super(props);
-   this.state = { customers: [] , next : '', prev : '', count: ''};
+    this.state = { customers: [], next: '', prev: '', count: '' };
     //this.customerStore = new CustomerStore();
   }
 
   componentDidMount() {
-   //this.load(null);
+    //this.load(null);
   }
 
 
-  load(url:string){
+  load(url: string) {
     /*
 
      if(!url) url = '/api/v1/customers';
@@ -57,12 +57,12 @@ export default class Customers extends React.Component<any, any> {
       <div className="panel">
         <DevTools />
         <CustomerList data={this.props.data}/>
-    
-        { (this.state.next != null) && 
-         <a  onClick={this.load.bind(this, this.state.next) }> Next </a> }
-       { (this.state.prev != null) && 
-         <a onClick={this.load.bind(this, this.state.prev) }> Prev </a> }
-         
+
+        { (this.state.next != null) &&
+          <a  onClick={this.load.bind(this, this.state.next) }> Next </a> }
+        { (this.state.prev != null) &&
+          <a onClick={this.load.bind(this, this.state.prev) }> Prev </a> }
+
       </div>
     )
   }
@@ -93,13 +93,13 @@ export class CustomerList extends React.Component<any, any>{
 
     let customers = this.props.data.posts.map(customer => {
       return <Customer key={customer.id} customer={customer}  data={this.props.data}
-         />
+        />
     }
     );
 
     return (
       <div>
-        <button onClick={this.handleAdd.bind(this) }>Add</button>
+        <button onClick={this.props.data.addPost}>Add</button>
 
         <table  className="table-striped" >
           <tbody>
@@ -127,7 +127,7 @@ export class Customer extends React.Component<any, any>{
       <tr>
         <td> {this.props.customer.firstName}</td>
         <td> {this.props.customer.lastName}</td>
-        <td> <button onClick={() => this.props.data.onSelect(this.props.customer)}
+        <td> <button onClick={() => this.props.data.onSelect(this.props.customer) }
           >Edit</button></td>
       </tr>
     )
@@ -137,7 +137,7 @@ export class Customer extends React.Component<any, any>{
 @observer
 export class CustomerForm extends React.Component<any, any>{
 
-   constructor(props) { super(props); }
+  constructor(props) { super(props); }
 
   render() {
     console.log(this.props.data);
@@ -145,8 +145,13 @@ export class CustomerForm extends React.Component<any, any>{
     return (
       <div className="panel panel-default">
         <Form schema={customerSchema}  formData={this.props.data.selectedPost}
-          onSubmit={({formData}) => this.props.data.onSubmit(formData)}
-          />
+          onSubmit={({formData}) => this.props.data.onSubmit(formData) }
+          >
+          <div>
+            <button type="submit" className="button">Submit</button>
+            <button className="button" onClick={() => console.log('cancel') }>Cancel</button>
+          </div>
+        </Form>
       </div>
     );
   }
