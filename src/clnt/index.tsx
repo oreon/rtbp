@@ -20,7 +20,7 @@ class AppState {
 
     @observable posts = []
     @observable selectedPost = {}
-    @observable form_data = {}
+    //@observable form_data = {}
     @observable is_loading = true
     @observable is_saving = false
 
@@ -29,9 +29,9 @@ class AppState {
         axios
             .get(url)
             .then(response => {
-                console.log(response);
+                //console.log(response);
                 let data: any = response.data
-                console.log(data.results);
+                //console.log(data.results);
                 //this.customerStore.customers = results
 
                 this.posts = data.results
@@ -46,12 +46,15 @@ class AppState {
     }
 
     onSubmit(formData) {
-        if (!formData.id)
-            axios.post('/api/v1/customers', formData)
+        console.log("submitting " + formData);
+        this.selectedPost = formData;
+        console.log('selected entity is ' + this.selectedPost)
+        if (! (this.selectedPost as any).id)
+            axios.post('/api/v1/customers', this.selectedPost)
                 .then(response => this.saveSuccess(response))
                 .catch(error => console.log(error));
         else {
-            axios.patch('/api/v1/customers/' + formData.id, formData)
+            axios.patch('/api/v1/customers/' + (this.selectedPost as any).id, this.selectedPost)
                 .then(response => this.saveSuccess(response))
                 .catch(error => console.log(error));
         }
@@ -60,18 +63,22 @@ class AppState {
     saveSuccess(response){
         this.is_saving = false
         console.log(response.data)
-        this.posts.unshift(response.data)
-        this.form_data = {}
+        //this.posts.unshift(response.data)
+        this.selectedPost = {}
     }
 
 
     addPost(object) {
         this.is_saving = true;
-        this.onSubmit(this.form_data);
+        //this.onSubmit();
     }
 
     initAdd(){
-        this.form_data = {}
+        this.selectedPost = {}
+    }
+
+    onSelect(post){
+        this.selectedPost = post;
     }
     /*
     removePost(post) {
@@ -195,7 +202,7 @@ class CustomerWrapper extends React.Component<any, any> {
     }
 }
 
-const appState = new AppState();
+//const appState = new AppState();
 ReactDOM.render((
     <Router history={hashHistory}>
         <Route path="/" component={TimerView}/>

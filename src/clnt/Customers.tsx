@@ -7,6 +7,8 @@ import * as axios from 'axios';
 
 import Form from 'react-jsonschema-form';
 
+import DevTools from 'mobx-react-devtools';
+
 export class CustomerStore{
 
 //@observable  customers:any = [];
@@ -53,8 +55,8 @@ export default class Customers extends React.Component<any, any> {
   render() {
     return (
       <div className="panel">
-       
-        <CustomerList customers={this.props.data.posts}/>
+        <DevTools />
+        <CustomerList data={this.props.data}/>
     
         { (this.state.next != null) && 
          <a  onClick={this.load.bind(this, this.state.next) }> Next </a> }
@@ -66,7 +68,7 @@ export default class Customers extends React.Component<any, any> {
   }
 }
 
-//@observer
+@observer
 export class CustomerList extends React.Component<any, any>{
 
   constructor(props) {
@@ -89,9 +91,9 @@ export class CustomerList extends React.Component<any, any>{
 
   render() {
 
-    let customers = this.props.customers.map(customer => {
-      return <Customer key={customer.id} customer={customer}
-        onSelect={this.handleEdit.bind(this, customer) } />
+    let customers = this.props.data.posts.map(customer => {
+      return <Customer key={customer.id} customer={customer}  data={this.props.data}
+         />
     }
     );
 
@@ -109,7 +111,7 @@ export class CustomerList extends React.Component<any, any>{
           </tbody>
         </table>
 
-        <CustomerForm  customer={this.state.selectedCustomer}/>
+        <CustomerForm  data={this.props.data}/>
       </div>
     )
   }
@@ -118,17 +120,38 @@ export class CustomerList extends React.Component<any, any>{
 @observer
 export class Customer extends React.Component<any, any>{
 
+  constructor(props) { super(props); }
+
   render() {
     return (
       <tr>
         <td> {this.props.customer.firstName}</td>
         <td> {this.props.customer.lastName}</td>
-        <td> <button onClick={this.props.onSelect}
+        <td> <button onClick={() => this.props.data.onSelect(this.props.customer)}
           >Edit</button></td>
       </tr>
     )
   }
 }
+
+@observer
+export class CustomerForm extends React.Component<any, any>{
+
+   constructor(props) { super(props); }
+
+  render() {
+    console.log(this.props.data);
+
+    return (
+      <div className="panel panel-default">
+        <Form schema={customerSchema}  formData={this.props.data.selectedPost}
+          onSubmit={({formData}) => this.props.data.onSubmit(formData)}
+          />
+      </div>
+    );
+  }
+}
+
 
 const customerSchema = {
   title: "Todos",
@@ -140,29 +163,3 @@ const customerSchema = {
   }
 }
 
-const onSubmit = ({formData}) => {
-  if (!formData.id)
-    axios.post('/api/v1/customers', formData)
-      .then(response =>    formData = {} )
-      .catch(error => console.log(error));
-  else {
-    axios.patch('/api/v1/customers/' + formData.id, formData)
-      .then(response => {  formData = {}; console.log(response); })
-      .catch(error => console.log(error));
-  }
-
-};
-
-
-export class CustomerForm extends React.Component<any, any>{
-
-  render() {
-    return (
-      <div className="panel panel-default">
-        <Form schema={customerSchema}  formData={this.props.customer}
-          onSubmit={onSubmit}
-          />
-      </div>
-    );
-  }
-}
