@@ -121,10 +121,7 @@ class CustomerBase(PersonBase):
 
  
 
-class CustomerOrderBase(models.Model): 
-
-            
-        
+class CustomerOrderBase(models.Model):       
     
     customer = models.ForeignKey('mystore.Customer', related_name='customerOrder')
         
@@ -152,13 +149,15 @@ class CustomerOrderBase(models.Model):
 class OrderItemBase(models.Model): 
 
     customerOrder = models.ForeignKey('mystore.CustomerOrder', related_name='orderItems')
-        
     
     qty = models.PositiveIntegerField(null = False, blank =  True, )
     
     product = models.ForeignKey('mystore.Product', related_name='orderItem')
-        
-    
+
+
+    @property   
+    def productDisplayName(self):
+        return self.product.__str__()
  
     @property   
     def displayName(self):

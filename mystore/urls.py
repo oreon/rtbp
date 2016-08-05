@@ -1,11 +1,24 @@
 
 from rest_framework import routers
+from rest_framework_mongoengine.routers import SimpleRouter as sr
+
+from mystore.dm import PostViewSet, UserViewSet, ProdViewSet as pv, CommentViewSet
+
 from .views import *
 
 
 router = routers.SimpleRouter(trailing_slash=False)
 
-  
+mymongorouter =  sr(trailing_slash=False)
+
+mymongorouter.register(r'posts', PostViewSet)
+mymongorouter.register(r'users', UserViewSet)
+mymongorouter.register(r'products', pv)
+mymongorouter.register(r'comments', CommentViewSet)
+
+
+
+
 router.register(r'products', ProductViewSet)
 router.register(r'productsWritable', ProductWritableViewSet)
 router.register(r'productsComplete', ProductCompleteViewSet)

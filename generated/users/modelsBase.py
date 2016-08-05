@@ -1,6 +1,7 @@
 
 from django.db import models
 
+
     
  
 
@@ -20,6 +21,8 @@ class AppUserBase(models.Model):
     @property   
     def displayName(self):
         return self.__str__()
+        
+    
     
     def __str__(self):
         return self.userName 
@@ -46,6 +49,8 @@ class AppRoleBase(models.Model):
     @property   
     def displayName(self):
         return self.__str__()
+        
+    
     
     def __str__(self):
         return self.name 
@@ -74,6 +79,8 @@ class GroupBase(models.Model):
     @property   
     def displayName(self):
         return self.__str__()
+        
+    
     
     def __str__(self):
         return self.appUsers+ "" 

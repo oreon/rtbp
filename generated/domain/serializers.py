@@ -6,21 +6,21 @@ import sys
 
 from django.db import transaction
 
-	 
-	 
-	 
-	 
-	 
-	 
+     
+     
+     
+     
+     
+     
 
-	 
+     
 
 
-	 
+     
 from  users.serializers import  AppUserLookupSerializer
-	 
+     
 
-	 
+     
     
 class AppUserLookupSerializer(serializers.ModelSerializer):
     
@@ -103,8 +103,8 @@ class CustomerReviewLookupSerializer(serializers.ModelSerializer):
         fields = ('displayName', 'id',)
     
     
-	
-	
+    
+    
 
 class AppUserSerializer(serializers.ModelSerializer):
     displayName = serializers.ReadOnlyField()
@@ -115,8 +115,8 @@ class AppUserSerializer(serializers.ModelSerializer):
         model = AppUser
 
 
-	
-	
+    
+    
 
 class AppRoleSerializer(serializers.ModelSerializer):
     displayName = serializers.ReadOnlyField()
@@ -127,8 +127,8 @@ class AppRoleSerializer(serializers.ModelSerializer):
         model = AppRole
 
 
-	
-	
+    
+    
 
 class GroupSerializer(serializers.ModelSerializer):
     displayName = serializers.ReadOnlyField()
@@ -139,8 +139,8 @@ class GroupSerializer(serializers.ModelSerializer):
         model = Group
 
 
-	
-	
+    
+    
 
 class ProductSerializer(serializers.ModelSerializer):
     displayName = serializers.ReadOnlyField()
@@ -151,8 +151,8 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
 
 
-	
-	
+    
+    
 
 class CategorySerializer(serializers.ModelSerializer):
     displayName = serializers.ReadOnlyField()
@@ -163,12 +163,12 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
 
 
-	
-		
-	
-		
-	
-	
+    
+        
+    
+        
+    
+    
 
 class OrderItemSerializer(serializers.ModelSerializer):
     displayName = serializers.ReadOnlyField()
@@ -181,8 +181,8 @@ class OrderItemSerializer(serializers.ModelSerializer):
         model = OrderItem
 
 
-	
-	
+    
+    
 
 class CustomerOrderSerializer(serializers.ModelSerializer):
     displayName = serializers.ReadOnlyField()
@@ -195,10 +195,10 @@ class CustomerOrderSerializer(serializers.ModelSerializer):
         model = CustomerOrder
 
 
-	
-		
-	
-	
+    
+        
+    
+    
 
 class CustomerReviewSerializer(serializers.ModelSerializer):
     displayName = serializers.ReadOnlyField()
@@ -210,8 +210,8 @@ class CustomerReviewSerializer(serializers.ModelSerializer):
         model = CustomerReview
 
 
-	
-	
+    
+    
 
 class CustomerSerializer(serializers.ModelSerializer):
     displayName = serializers.ReadOnlyField()
@@ -224,8 +224,8 @@ class CustomerSerializer(serializers.ModelSerializer):
         model = Customer
 
 
-	
-	
+    
+    
 
 class EmployeeSerializer(serializers.ModelSerializer):
     displayName = serializers.ReadOnlyField()
@@ -237,13 +237,15 @@ class EmployeeSerializer(serializers.ModelSerializer):
         model = Employee
 
 
-	
-	
-	
+    
+    
+    
     
 class AppUserWritableSerializer(serializers.ModelSerializer):
     
     displayName = serializers.ReadOnlyField()
+    
+    
     
     
     
@@ -255,12 +257,14 @@ class AppUserWritableSerializer(serializers.ModelSerializer):
     
 
 
-	
-	
+    
+    
     
 class AppRoleWritableSerializer(serializers.ModelSerializer):
     
     displayName = serializers.ReadOnlyField()
+    
+    
     
     
     
@@ -272,12 +276,14 @@ class AppRoleWritableSerializer(serializers.ModelSerializer):
     
 
 
-	
-	
+    
+    
     
 class GroupWritableSerializer(serializers.ModelSerializer):
     
     displayName = serializers.ReadOnlyField()
+    
+    
     
     
     
@@ -289,12 +295,14 @@ class GroupWritableSerializer(serializers.ModelSerializer):
     
 
 
-	
-	
+    
+    
     
 class ProductWritableSerializer(serializers.ModelSerializer):
     
     displayName = serializers.ReadOnlyField()
+    
+    
     
     
     
@@ -306,12 +314,14 @@ class ProductWritableSerializer(serializers.ModelSerializer):
     
 
 
-	
-	
+    
+    
     
 class CategoryWritableSerializer(serializers.ModelSerializer):
     
     displayName = serializers.ReadOnlyField()
+    
+    
     
     
     
@@ -323,16 +333,20 @@ class CategoryWritableSerializer(serializers.ModelSerializer):
     
 
 
-	
-		
-	
-		
-	
-	
+    
+        
+    
+        
+    
+    
     
 class OrderItemWritableSerializer(serializers.ModelSerializer):
     
     displayName = serializers.ReadOnlyField()
+    
+    customerOrder_displayName = serializers.ReadOnlyField(source='customerOrderDisplayName')
+    product_displayName = serializers.ReadOnlyField(source='productDisplayName')
+    
     
     
     
@@ -344,12 +358,15 @@ class OrderItemWritableSerializer(serializers.ModelSerializer):
     
 
 
-	
-	
+    
+    
     
 class CustomerOrderWritableSerializer(serializers.ModelSerializer):
     
     displayName = serializers.ReadOnlyField()
+    
+    customer_displayName = serializers.ReadOnlyField(source='customerDisplayName')
+    
     
     
     orderItems = OrderItemWritableSerializer(many=True)
@@ -360,7 +377,7 @@ class CustomerOrderWritableSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         try:
-        	
+            
             orderItemsCurrent = validated_data.pop('orderItems')   
             
             
@@ -386,7 +403,7 @@ class CustomerOrderWritableSerializer(serializers.ModelSerializer):
     
     
     def updateOrderItems(self, instance , validated_data):
-    	if not 'orderItems' in validated_data.keys() : return;
+        if not 'orderItems' in validated_data.keys() : return;
     
         orderItemsCurrent = validated_data.pop('orderItems')
             
@@ -407,14 +424,17 @@ class CustomerOrderWritableSerializer(serializers.ModelSerializer):
     
 
 
-	
-		
-	
-	
+    
+        
+    
+    
     
 class CustomerReviewWritableSerializer(serializers.ModelSerializer):
     
     displayName = serializers.ReadOnlyField()
+    
+    customer_displayName = serializers.ReadOnlyField(source='customerDisplayName')
+    
     
     
     
@@ -426,12 +446,14 @@ class CustomerReviewWritableSerializer(serializers.ModelSerializer):
     
 
 
-	
-	
+    
+    
     
 class CustomerWritableSerializer(serializers.ModelSerializer):
     
     displayName = serializers.ReadOnlyField()
+    
+    
     
     
     customerOrders = CustomerOrderWritableSerializer(many=True)
@@ -444,7 +466,7 @@ class CustomerWritableSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         try:
-        	
+            
             customerOrdersCurrent = validated_data.pop('customerOrders')   
             
             customerReviewsCurrent = validated_data.pop('customerReviews')   
@@ -477,7 +499,7 @@ class CustomerWritableSerializer(serializers.ModelSerializer):
     
     
     def updateCustomerOrders(self, instance , validated_data):
-    	if not 'customerOrders' in validated_data.keys() : return;
+        if not 'customerOrders' in validated_data.keys() : return;
     
         customerOrdersCurrent = validated_data.pop('customerOrders')
             
@@ -491,7 +513,7 @@ class CustomerWritableSerializer(serializers.ModelSerializer):
             CustomerOrder(customer=instance, **item).save()  
      
     def updateCustomerReviews(self, instance , validated_data):
-    	if not 'customerReviews' in validated_data.keys() : return;
+        if not 'customerReviews' in validated_data.keys() : return;
     
         customerReviewsCurrent = validated_data.pop('customerReviews')
             
@@ -512,12 +534,15 @@ class CustomerWritableSerializer(serializers.ModelSerializer):
     
 
 
-	
-	
+    
+    
     
 class EmployeeWritableSerializer(serializers.ModelSerializer):
     
     displayName = serializers.ReadOnlyField()
+    
+    appUser_displayName = serializers.ReadOnlyField(source='appUserDisplayName')
+    
     
     
     

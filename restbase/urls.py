@@ -6,6 +6,9 @@ from mystore.views import *
 
 from mystore.urls import router
 
+from mystore.urls import mymongorouter
+
+
 
 
 
@@ -15,6 +18,9 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
       url(r'^$', 'mystore.views.index'),
     url(r'^api/v1/', include(router.urls)),
+    url(r'^api/v2/', include(mymongorouter.urls)),
+    
+    
     url(r'^api-token-auth/', 'rest_framework_jwt.views.obtain_jwt_token'),
     url(r'^admin/', include(admin.site.urls)),
 )

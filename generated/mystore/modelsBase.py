@@ -1,15 +1,16 @@
 
 from django.db import models
 
-	
+    
 CustomerType = (
-	('0', 'BRONZE'),
-	('1', 'SILVER'),
-	('2', 'GOLD'),
+    ('0', 'BRONZE'),
+    ('1', 'SILVER'),
+    ('2', 'GOLD'),
   
 )
+
     
-      
+  
 
 class PersonBase(models.Model): 
 
@@ -21,6 +22,8 @@ class PersonBase(models.Model):
     @property   
     def displayName(self):
         return self.__str__()
+        
+    
     
     def __str__(self):
         return ''.join([self.firstName , ', ', self.lastName]) 
@@ -53,6 +56,8 @@ class ProductBase(models.Model):
     @property   
     def displayName(self):
         return self.__str__()
+        
+    
     
     def __str__(self):
         return self.name 
@@ -79,6 +84,8 @@ class CategoryBase(models.Model):
     @property   
     def displayName(self):
         return self.__str__()
+        
+    
     
     def __str__(self):
         return self.name 
@@ -107,6 +114,8 @@ class CustomerBase(PersonBase):
     @property   
     def displayName(self):
         return self.__str__()
+        
+    
     
     def __str__(self):
         return super().__str__() 
@@ -135,6 +144,11 @@ class CustomerOrderBase(models.Model):
     @property   
     def displayName(self):
         return self.__str__()
+        
+    @property   
+    def customerDisplayName(self):
+        return self.customer.__str__()
+    
     
     def __str__(self):
         return self.notes 
@@ -163,6 +177,14 @@ class OrderItemBase(models.Model):
     @property   
     def displayName(self):
         return self.__str__()
+        
+    @property   
+    def customerOrderDisplayName(self):
+        return self.customerOrder.__str__()
+    @property   
+    def productDisplayName(self):
+        return self.product.__str__()
+    
     
     def __str__(self):
         return self.customerOrder+ "" 
@@ -172,7 +194,7 @@ class OrderItemBase(models.Model):
         
     
       
-    	unique_together = ("customerOrder", "product")
+        unique_together = ("customerOrder", "product")
       
         
 
@@ -191,6 +213,11 @@ class EmployeeBase(PersonBase):
     @property   
     def displayName(self):
         return self.__str__()
+        
+    @property   
+    def appUserDisplayName(self):
+        return self.appUser.__str__()
+    
     
     def __str__(self):
         return super().__str__() 
@@ -218,6 +245,11 @@ class CustomerReviewBase(models.Model):
     @property   
     def displayName(self):
         return self.__str__()
+        
+    @property   
+    def customerDisplayName(self):
+        return self.customer.__str__()
+    
     
     def __str__(self):
         return self.review 

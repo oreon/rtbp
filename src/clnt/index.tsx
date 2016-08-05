@@ -1,168 +1,96 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {observable} from 'mobx';
-import {observer} from 'mobx-react';
-import DevTools from 'mobx-react-devtools';
-
-import Customers from './Customers';
-import * as axios from 'axios';
 
 import Form from 'react-jsonschema-form';
-import { Router, Route, hashHistory, Link  } from 'react-router'
 
+import DevTools from 'mobx-react-devtools';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 
-class AppState {
-    @observable timer = 0;
-    //@observable  customers:any = [];
+import { Router, Route, hashHistory, Link  } from 'react-router'
 
-    @observable posts = []
-    @observable selectedPost = {}
-    //@observable form_data = {}
-    @observable is_loading = true
-    @observable is_saving = false
+import ProductWrapper from './admin/Product';
 
-    @observable next = null;
-    @observable prev = null;
-    @observable count = 0;
+import CategoryWrapper from './admin/Category';
 
-    @observable searchString = "";
-    
+import  LookupService  from './commons/LookupService'
 
-    load(url: string) {
-        if (!url) url = '/api/v1/customers';
-        axios
-            .get(url)
-            .then(response => {
-                //console.log(response);
-                let data: any = response.data
-                this.posts = data.results
-                this.is_loading = false
-                this. next  = data.next, 
-                this.prev  = data.previous, 
-                this.count =  data.count;
-            });
-    }
-
-    constructor() {
-        this.load(null);
-        //this.bind(initAdd);
-    }
-
-    onSubmit(formData) {
-        console.log("submitting " + formData);
-        this.selectedPost = formData;
-        console.log('selected entity is ' + this.selectedPost)
-        let id = (this.selectedPost as any).id
-        if (!id )
-            axios.post('/api/v1/customers', this.selectedPost)
-                .then(response => this.saveSuccess(response, null))
-                .catch(error => console.log(error));
-        else {
-            axios.patch('/api/v1/customers/' + id, this.selectedPost)
-                .then(response => this.saveSuccess(response, id))
-                .catch(error => console.log(error));
-        }
-    }
-
-    saveSuccess(response,id){
-        this.is_saving = false
-        let entity = response.data;
-        console.log("saved " + entity.firstName + entity.id)
-        if(id)
-        this.posts.forEach((item, i) => { if (item.id == id)  this.posts[i] = entity });
-       
-        this.selectedPost = {}
-    }
+//import CustomerWrapper from './admin/Customers';
 
 
-   public addPost = () => {
 
-        this.is_saving = true;
-         this.selectedPost = {}
-        //this.onSubmit();
-    }
-
-    initAdd(){
-        console.log("here " )
-        this.selectedPost = {}
-    }
-
-    onSelect(post){
-        this.selectedPost = post;
-    }
-    /*
-    removePost(post) {
-      deleteObject({ bucket: config.cosmicjs.bucket }, { slug: post.slug }, (err, res) => {
-        this.posts = this.posts.filter(apost => {
-          return apost._id !== post._id
-        })
-      })
-    }*/
+import { AdminView }  from './admin/AdminView'
 
 
-    /*
-        @observable
-        formData = {
-            title: "First task",
-            done: true
-        };
-    
-        constructor() {
-            setInterval(() => {
-                this.timer += 1;
-            }, 1000);
-        }
-    
-        resetTimer() {
-            this.timer = 0;
-        }
-    */
-}
 
 
-const schema = {
-    title: "Todos",
-    type: "object",
-    required: ["title"],
-    properties: {
-        title: { type: "string", title: "Title", default: "A new task" },
-        done: { type: "boolean", title: "Done?", default: false },
-        listOfStrings: {
-            type: "array",
-            title: "A list of strings",
-            items: {
-                "type": "object",
-                "properties": {
-                    fn: { type: "string", "default": "bazinga" },
-                    ln: { type: "string" }
-                }
 
 
-            }
-        },
-    }
 
 
-};
+
+
+// const schema = {
+//     title: "Todos",
+//     type: "object",
+//     required: ["title"],
+
+
+//     properties: {
+//         title: { type: "string", title: "Title", default: "A new task" },
+//         done: { type: "boolean", title: "Done?", default: "false" },
+//         subs: {
+//             type: "array",
+//             title: "A list of strings",
+//             items: {
+//                 type: "object",
+//                 properties: {
+//                     fn: { type: "string", },
+//                     ln: { type: "string" }
+//                 }
+//             }
+//         },
+//         customerReview: {
+//             type: "array",
+//             title: "Reviews",
+//             items: {
+//                 type: "object",
+//                 properties: {
+//                     review: { type: "string" },
+//                     id: { type: "integer" }
+//                 }
+//             }
+//         }
+//     }
+// };
+
+// const formData =
+//     {
+//         title: "My current tasks",
+//         done: true,
+//         subs: [
+//             {
+//                 "fn": "My first task",
+//                 "ln": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+//             },
+//             {
+//                 "fn": "My second task",
+//                 "ln": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+//             },
+//         ],
+//         "customerReview": [
+//             {
+//                 "id": 2,
+//                 "displayName": "good customer , pays on time",
+//                 "review": "good customer , pays on time",
+//                 "rating": 2
+//             }
+//         ],
+
+//     }
 
 const log = (type) => console.log.bind(console, type);
-
-@observer
-class Todo extends React.Component<{ todo: any }, {}> {
-
-    handleClick() { this.props.todo.done = !this.props.todo.done }
-
-    render() {
-        return (<div> title: {this.props.todo.title}  done: {this.props.todo.done ? 'ok' : 'Not'}
-            <div onClick={this.handleClick.bind(this) }>Click to toggle.
-            </div>
-        </div>
-        );
-    }
-}
 
 
 class Repos extends React.Component<{}, {}>{
@@ -178,7 +106,7 @@ class About extends React.Component<{}, {}>{
 }
 
 
-@observer
+//@observer
 class TimerView extends React.Component<{}, {}> {
     render() {
         return (
@@ -186,15 +114,13 @@ class TimerView extends React.Component<{}, {}> {
 
                 <div>
                     <ul role="nav">
-                        <li><Link to="/repos">About</Link></li>
-                        <li><Link to="/admin/customers">Customer</Link></li>
+                        <li><Link to="/repos">About Me</Link></li>
+                        <li><Link to="/admin">Admin</Link></li>
+                        <li><Link to="/admin/employees">Employee</Link></li>
                     </ul>
                     <DevTools />
-                    <RaisedButton
-                        label="Super Secret Password"
-                        secondary={true}
-
-                        />
+                    {/* 
+                    <Form schema={schema} formData={formData} />  */}
                 </div>
             </MuiThemeProvider>
         );
@@ -205,23 +131,23 @@ class TimerView extends React.Component<{}, {}> {
     }
 };
 
-const data = new AppState()
 
-class CustomerWrapper extends React.Component<any, any> {
-    render() {
-        return (
-            <Customers data={data} />
-        );
-    }
+function init() {
+    console.log("initialized")
+
+    LookupService.loadLookups().then(x =>
+            ReactDOM.render((
+                <Router history={hashHistory}>
+                    <Route path="/" component={TimerView}/>
+                    <Route path="/admin" component={AdminView}/>
+                    {/* add the routes here  <Route path="/admin/Customers" component={CustomerWrapper}/>*/}
+                    <Route path="/repos" component={Repos}/>
+                    <Route path="/admin/Products" component={ProductWrapper}/>
+                    <Route path="/admin/Categorys" component={CategoryWrapper}/>
+                </Router>
+
+            ), document.getElementById('root'))
+     )
 }
 
-//const appState = new AppState();
-ReactDOM.render((
-    <Router history={hashHistory}>
-        <Route path="/" component={TimerView}/>
-        {/* add the routes here */}
-        <Route path="/repos" component={Repos}/>
-        <Route path="/admin/customers" component={CustomerWrapper}/>
-    </Router>
-
-), document.getElementById('root'));
+init();

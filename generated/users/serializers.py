@@ -6,9 +6,9 @@ import sys
 
 from django.db import transaction
 
-	 
-	 
-	 
+     
+     
+     
     
 class AppUserLookupSerializer(serializers.ModelSerializer):
     
@@ -35,8 +35,8 @@ class GroupLookupSerializer(serializers.ModelSerializer):
         fields = ('displayName', 'id',)
     
     
-	
-	
+    
+    
 
 class AppUserSerializer(serializers.ModelSerializer):
     displayName = serializers.ReadOnlyField()
@@ -47,8 +47,8 @@ class AppUserSerializer(serializers.ModelSerializer):
         model = AppUser
 
 
-	
-	
+    
+    
 
 class AppRoleSerializer(serializers.ModelSerializer):
     displayName = serializers.ReadOnlyField()
@@ -59,8 +59,8 @@ class AppRoleSerializer(serializers.ModelSerializer):
         model = AppRole
 
 
-	
-	
+    
+    
 
 class GroupSerializer(serializers.ModelSerializer):
     displayName = serializers.ReadOnlyField()
@@ -71,13 +71,15 @@ class GroupSerializer(serializers.ModelSerializer):
         model = Group
 
 
-	
-	
-	
+    
+    
+    
     
 class AppUserWritableSerializer(serializers.ModelSerializer):
     
     displayName = serializers.ReadOnlyField()
+    
+    
     
     
     
@@ -89,12 +91,14 @@ class AppUserWritableSerializer(serializers.ModelSerializer):
     
 
 
-	
-	
+    
+    
     
 class AppRoleWritableSerializer(serializers.ModelSerializer):
     
     displayName = serializers.ReadOnlyField()
+    
+    
     
     
     
@@ -106,12 +110,14 @@ class AppRoleWritableSerializer(serializers.ModelSerializer):
     
 
 
-	
-	
+    
+    
     
 class GroupWritableSerializer(serializers.ModelSerializer):
     
     displayName = serializers.ReadOnlyField()
+    
+    
     
     
     
