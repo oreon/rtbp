@@ -5,10 +5,12 @@ import * as ReactDOM from 'react-dom';
 
 import BaseCrudComponent from '../commons/BaseComponent';
 import AppState from '../commons/AppState';
+import LookupService  from '../commons/LookupService';
 
 
-
- const groupSchema = {
+export function createSchema(){ 
+ 
+ return {
     title: "Group",
     type: "object",
     required: [ 
@@ -16,14 +18,15 @@ import AppState from '../commons/AppState';
     properties: {
     
 
-appUsers: { type: "string", title: "App Users" ,   
+appUsers:{ type: "string", title: "App Users",   
 
 
+	
 },
 
 
 
-appRoles: { type: "array", title: "App Roles" ,   
+appRoles:{ type: "array", title: "App Roles",   
 
     "items":{
  'enum': LookupService.getLookup('appRoles').map(x => x.id .toString()  ),
@@ -31,15 +34,17 @@ appRoles: { type: "array", title: "App Roles" ,
     },
     "uniqueItems": true
 
+	
 },
 
 
     
-        
     }
-};
+ };
 
- const groupUISchema = {
+}
+
+export const groupUISchema = {
  	
 
 appUsers: {  'ui:placeholder': "App Users" },
@@ -53,24 +58,30 @@ appRoles: {  'ui:placeholder': "App Roles" },
  }
 
 
-const groupHeaders = [
+
+
+
+
+
+export const groupHeaders = [
       
  ]
 
-/*
-export class GroupStore extends AppState{
-   constructor(url:string, headers:any, formSchema:any) {
-     super(url, headers, formSchema);
-   }
-}*/
-
-const data = new AppState('groups', groupHeaders, 
-	groupSchema, groupUISchema);
+export class GroupStore extends AppState {
+    constructor(url: string, headers: any, formSchema: any, uiSchema: any) {
+        super(url, headers, formSchema, uiSchema);
+    }
+}
 
 export default class GroupWrapper extends React.Component<any, any> {
+
+    data = new GroupStore('groups', groupHeaders,
+    createSchema(), groupUISchema);
+
     render() {
         return (
-            <BaseCrudComponent data={data} />
+            <BaseCrudComponent data={this.data} />
         );
     }
 }
+

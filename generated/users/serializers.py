@@ -84,6 +84,8 @@ class AppUserWritableSerializer(serializers.ModelSerializer):
     
     
     
+    
+    
 
     class Meta:
         model = AppUser
@@ -103,6 +105,8 @@ class AppRoleWritableSerializer(serializers.ModelSerializer):
     
     
     
+    
+    
 
     class Meta:
         model = AppRole
@@ -116,6 +120,8 @@ class AppRoleWritableSerializer(serializers.ModelSerializer):
 class GroupWritableSerializer(serializers.ModelSerializer):
     
     displayName = serializers.ReadOnlyField()
+    
+    
     
     
     

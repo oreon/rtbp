@@ -8,7 +8,7 @@ import AppState from '../commons/AppState';
 import LookupService  from '../commons/LookupService';
 
 
- function createSchema(){ 
+export function createSchema(){ 
  
  return {
     title: "Group",
@@ -18,14 +18,15 @@ import LookupService  from '../commons/LookupService';
     properties: {
     
 
-appUsers: { type: "string", title: "App Users" ,   
+appUsers:{ type: "string", title: "App Users",   
 
 
+	
 },
 
 
 
-appRoles: { type: "array", title: "App Roles" ,   
+appRoles:{ type: "array", title: "App Roles",   
 
     "items":{
  'enum': LookupService.getLookup('appRoles').map(x => x.id .toString()  ),
@@ -33,17 +34,17 @@ appRoles: { type: "array", title: "App Roles" ,
     },
     "uniqueItems": true
 
+	
 },
 
 
     
-        
     }
  };
 
 }
 
- const groupUISchema = {
+export const groupUISchema = {
  	
 
 appUsers: {  'ui:placeholder': "App Users" },
@@ -57,7 +58,12 @@ appRoles: {  'ui:placeholder': "App Roles" },
  }
 
 
-const groupHeaders = [
+
+
+
+
+
+export const groupHeaders = [
       
  ]
 

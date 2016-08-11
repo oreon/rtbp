@@ -5,10 +5,12 @@ import * as ReactDOM from 'react-dom';
 
 import BaseCrudComponent from '../commons/BaseComponent';
 import AppState from '../commons/AppState';
+import LookupService  from '../commons/LookupService';
 
 
-
- const categorySchema = {
+export function createSchema(){ 
+ 
+ return {
     title: "Category",
     type: "object",
     required: [  'name' 
@@ -16,22 +18,25 @@ import AppState from '../commons/AppState';
     properties: {
     
 
-products: { type: "string", title: "Products" ,   
+products:{ type: "string", title: "Products",   
 
 
+	
 },
 
 
 
-name: { type: "string", title: "Name" , },
+name:{ type: "string", title: "Name",  	
+},
 
 
     
-        
     }
-};
+ };
 
- const categoryUISchema = {
+}
+
+export const categoryUISchema = {
  	
 
 products: {  'ui:placeholder': "Products" },
@@ -45,26 +50,33 @@ name: {  'ui:placeholder': "Name" },
  }
 
 
-const categoryHeaders = [
+
+
+
+
+
+export const categoryHeaders = [
+ 
  
  {property:"name",title:"Name" }
       
  ]
 
-/*
-export class CategoryStore extends AppState{
-   constructor(url:string, headers:any, formSchema:any) {
-     super(url, headers, formSchema);
-   }
-}*/
-
-const data = new AppState('categorys', categoryHeaders, 
-	categorySchema, categoryUISchema);
+export class CategoryStore extends AppState {
+    constructor(url: string, headers: any, formSchema: any, uiSchema: any) {
+        super(url, headers, formSchema, uiSchema);
+    }
+}
 
 export default class CategoryWrapper extends React.Component<any, any> {
+
+    data = new CategoryStore('categorys', categoryHeaders,
+    createSchema(), categoryUISchema);
+
     render() {
         return (
-            <BaseCrudComponent data={data} />
+            <BaseCrudComponent data={this.data} />
         );
     }
 }
+

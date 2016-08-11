@@ -8,7 +8,7 @@ import AppState from '../commons/AppState';
 import LookupService  from '../commons/LookupService';
 
 
- function createSchema(){ 
+export function createSchema(){ 
  
  return {
     title: "Category",
@@ -18,24 +18,25 @@ import LookupService  from '../commons/LookupService';
     properties: {
     
 
-products: { type: "string", title: "Products" ,   
+products:{ type: "string", title: "Products",   
 
 
+	
 },
 
 
 
-name: { type: "string", title: "Name" , },
+name:{ type: "string", title: "Name",  	
+},
 
 
     
-        
     }
  };
 
 }
 
- const categoryUISchema = {
+export const categoryUISchema = {
  	
 
 products: {  'ui:placeholder': "Products" },
@@ -49,7 +50,13 @@ name: {  'ui:placeholder': "Name" },
  }
 
 
-const categoryHeaders = [
+
+
+
+
+
+export const categoryHeaders = [
+ 
  
  {property:"name",title:"Name" }
       

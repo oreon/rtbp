@@ -8,7 +8,7 @@ import AppState from '../commons/AppState';
 import LookupService  from '../commons/LookupService';
 
 
- function createSchema(){ 
+export function createSchema(){ 
  
  return {
     title: "App User",
@@ -18,19 +18,22 @@ import LookupService  from '../commons/LookupService';
     properties: {
     
 
-userName: { type: "string", title: "User Name" , },
+userName:{ type: "string", title: "User Name",  	
+},
 
 
 
-password: { type: "string", title: "Password" , },
+password:{ type: "string", title: "Password",  	
+},
 
 
 
-enabled: { type: "boolean", title: "Enabled" , },
+enabled:{ type: "boolean", title: "Enabled",  	
+},
 
 
 
-groups: { type: "array", title: "Groups" ,   
+groups:{ type: "array", title: "Groups",   
 
     "items":{
  'enum': LookupService.getLookup('groups').map(x => x.id .toString()  ),
@@ -38,17 +41,17 @@ groups: { type: "array", title: "Groups" ,
     },
     "uniqueItems": true
 
+	
 },
 
 
     
-        
     }
  };
 
 }
 
- const appUserUISchema = {
+export const appUserUISchema = {
  	
 
 userName: {  'ui:placeholder': "User Name" },
@@ -70,12 +73,20 @@ groups: {  'ui:placeholder': "Groups" },
  }
 
 
-const appUserHeaders = [
+
+
+
+
+
+export const appUserHeaders = [
+ 
  
  {property:"userName",title:"User Name" }
  ,
+ 
  {property:"password",title:"Password" }
  ,
+ 
  {property:"enabled",title:"Enabled" }
       
  ]

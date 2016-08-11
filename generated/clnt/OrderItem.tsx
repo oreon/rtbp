@@ -8,7 +8,7 @@ import AppState from '../commons/AppState';
 import LookupService  from '../commons/LookupService';
 
 
- function createSchema(){ 
+export function createSchema(){ 
  
  return {
     title: "Order Item",
@@ -24,27 +24,28 @@ customerOrder: {
 
 
 
-qty: { type: "integer", title: "Qty" , },
+qty:{ type: "integer", title: "Qty",  	
+},
 
 
 
-product: { type: "integer", title: "Product" ,   
+product:{ type: "integer", title: "Product",   
 
- 'enum': LookupService.getLookup('product').map(x => x.id   ),
- 'enumNames': LookupService.getLookup('product').map(x => x.displayName)
+ 'enum': LookupService.getLookup('products').map(x => x.id   ),
+ 'enumNames': LookupService.getLookup('products').map(x => x.displayName)
 
 
+	
 },
 
 
     
-        
     }
  };
 
 }
 
- const orderItemUISchema = {
+export const orderItemUISchema = {
  	
   
 customerOrder: {
@@ -64,13 +65,21 @@ product: {  'ui:placeholder': "Product" },
  }
 
 
-const orderItemHeaders = [
+
+
+
+
+
+export const orderItemHeaders = [
  
- {property:"customerOrder",title:"Customer Order" }
+ 
+ {property:"customerOrder_displayName",title:"Customer Order" }
  ,
+ 
  {property:"qty",title:"Qty" }
  ,
- {property:"product",title:"Product" }
+ 
+ {property:"product_displayName",title:"Product" }
       
  ]
 

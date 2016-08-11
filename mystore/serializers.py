@@ -234,6 +234,8 @@ class CustomerOrderWritableSerializer(serializers.ModelSerializer):
     
     orderItems = OrderItemWritableSerializer(many=True)
     
+    customer = serializers.PrimaryKeyRelatedField(queryset=Customer.objects.all())
+    
     
     @transaction.atomic
     def create(self, validated_data):

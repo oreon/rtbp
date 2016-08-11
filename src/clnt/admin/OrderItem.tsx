@@ -5,10 +5,12 @@ import * as ReactDOM from 'react-dom';
 
 import BaseCrudComponent from '../commons/BaseComponent';
 import AppState from '../commons/AppState';
+import LookupService  from '../commons/LookupService';
 
 
-
- const orderItemSchema = {
+export function createSchema(){ 
+ 
+ return {
     title: "Order Item",
     type: "object",
     required: [ 
@@ -22,25 +24,28 @@ customerOrder: {
 
 
 
-qty: { type: "integer", title: "Qty" , },
+qty:{ type: "integer", title: "Qty",  	
+},
 
 
 
-product: { type: "integer", title: "Product" ,   
+product:{ type: "integer", title: "Product",   
 
- 'enum': LookupService.getLookup('product').map(x => x.id   ),
- 'enumNames': LookupService.getLookup('product').map(x => x.displayName)
+ 'enum': LookupService.getLookup('products').map(x => x.id   ),
+ 'enumNames': LookupService.getLookup('products').map(x => x.displayName)
 
 
+	
 },
 
 
     
-        
     }
-};
+ };
 
- const orderItemUISchema = {
+}
+
+export const orderItemUISchema = {
  	
   
 customerOrder: {
@@ -60,30 +65,39 @@ product: {  'ui:placeholder': "Product" },
  }
 
 
-const orderItemHeaders = [
+
+
+
+
+
+export const orderItemHeaders = [
  
- {property:"customerOrder",title:"Customer Order" }
+ 
+ {property:"customerOrder_displayName",title:"Customer Order" }
  ,
+ 
  {property:"qty",title:"Qty" }
  ,
- {property:"product",title:"Product" }
+ 
+ {property:"product_displayName",title:"Product" }
       
  ]
 
-/*
-export class OrderItemStore extends AppState{
-   constructor(url:string, headers:any, formSchema:any) {
-     super(url, headers, formSchema);
-   }
-}*/
-
-const data = new AppState('orderItems', orderItemHeaders, 
-	orderItemSchema, orderItemUISchema);
+export class OrderItemStore extends AppState {
+    constructor(url: string, headers: any, formSchema: any, uiSchema: any) {
+        super(url, headers, formSchema, uiSchema);
+    }
+}
 
 export default class OrderItemWrapper extends React.Component<any, any> {
+
+    data = new OrderItemStore('orderItems', orderItemHeaders,
+    createSchema(), orderItemUISchema);
+
     render() {
         return (
-            <BaseCrudComponent data={data} />
+            <BaseCrudComponent data={this.data} />
         );
     }
 }
+

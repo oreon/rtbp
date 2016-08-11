@@ -3,7 +3,6 @@ import * as axios from 'axios';
 
 import {baseUrl} from '../commons/AppState'
 
-const urls = ['products', 'categorys']
 
 
 export default class LookupService {
@@ -13,7 +12,7 @@ export default class LookupService {
     //@observable
     static categorys = null
 
-    public static async loadLookups() {
+    public static async loadLookups(urls) {
         console.log("loading lookups");
         //let promises = urls.map(LookupService.loadlu) // call getImage on each array element and return array of promises
         for (var i = 0; i < urls.length; i++) {

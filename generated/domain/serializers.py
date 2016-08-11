@@ -250,6 +250,8 @@ class AppUserWritableSerializer(serializers.ModelSerializer):
     
     
     
+    
+    
 
     class Meta:
         model = AppUser
@@ -263,6 +265,8 @@ class AppUserWritableSerializer(serializers.ModelSerializer):
 class AppRoleWritableSerializer(serializers.ModelSerializer):
     
     displayName = serializers.ReadOnlyField()
+    
+    
     
     
     
@@ -288,6 +292,8 @@ class GroupWritableSerializer(serializers.ModelSerializer):
     
     
     
+    
+    
 
     class Meta:
         model = Group
@@ -307,6 +313,8 @@ class ProductWritableSerializer(serializers.ModelSerializer):
     
     
     
+    
+    
 
     class Meta:
         model = Product
@@ -320,6 +328,8 @@ class ProductWritableSerializer(serializers.ModelSerializer):
 class CategoryWritableSerializer(serializers.ModelSerializer):
     
     displayName = serializers.ReadOnlyField()
+    
+    
     
     
     
@@ -349,6 +359,10 @@ class OrderItemWritableSerializer(serializers.ModelSerializer):
     
     
     
+    org.eclipse.uml2.uml.internal.impl.PropertyImpl@67ab1c47 (name: customerOrder, visibility: private) (isLeaf: false) (isStatic: false) (isOrdered: false, isUnique: true, isReadOnly: false) (aggregation: none, isDerived: false, isDerivedUnion: false, isID: false) = serializers.PrimaryKeyRelatedField(queryset=CustomerOrder.objects.all())
+    
+    
+    
     
     
 
@@ -366,6 +380,10 @@ class CustomerOrderWritableSerializer(serializers.ModelSerializer):
     displayName = serializers.ReadOnlyField()
     
     customer_displayName = serializers.ReadOnlyField(source='customerDisplayName')
+    
+    
+    
+    org.eclipse.uml2.uml.internal.impl.PropertyImpl@75459c75 (name: customer, visibility: private) (isLeaf: false) (isStatic: false) (isOrdered: false, isUnique: true, isReadOnly: false) (aggregation: none, isDerived: false, isDerivedUnion: false, isID: false) = serializers.PrimaryKeyRelatedField(queryset=Customer.objects.all())
     
     
     
@@ -437,6 +455,10 @@ class CustomerReviewWritableSerializer(serializers.ModelSerializer):
     
     
     
+    org.eclipse.uml2.uml.internal.impl.PropertyImpl@19ae6bb (name: customer, visibility: private) (isLeaf: false) (isStatic: false) (isOrdered: false, isUnique: true, isReadOnly: false) (aggregation: none, isDerived: false, isDerivedUnion: false, isID: false) = serializers.PrimaryKeyRelatedField(queryset=Customer.objects.all())
+    
+    
+    
     
     
 
@@ -452,6 +474,8 @@ class CustomerReviewWritableSerializer(serializers.ModelSerializer):
 class CustomerWritableSerializer(serializers.ModelSerializer):
     
     displayName = serializers.ReadOnlyField()
+    
+    
     
     
     
@@ -542,6 +566,8 @@ class EmployeeWritableSerializer(serializers.ModelSerializer):
     displayName = serializers.ReadOnlyField()
     
     appUser_displayName = serializers.ReadOnlyField(source='appUserDisplayName')
+    
+    
     
     
     

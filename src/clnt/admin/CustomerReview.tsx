@@ -5,10 +5,12 @@ import * as ReactDOM from 'react-dom';
 
 import BaseCrudComponent from '../commons/BaseComponent';
 import AppState from '../commons/AppState';
+import LookupService  from '../commons/LookupService';
 
 
-
- const customerReviewSchema = {
+export function createSchema(){ 
+ 
+ return {
     title: "Customer Review",
     type: "object",
     required: [ 
@@ -22,19 +24,22 @@ customer: {
 
 
 
-review: { type: "string", title: "Review" , },
+review:{ type: "string", title: "Review",  	
+},
 
 
 
-rating: { type: "integer", title: "Rating" , },
+rating:{ type: "integer", title: "Rating",  	
+},
 
 
     
-        
     }
-};
+ };
 
- const customerReviewUISchema = {
+}
+
+export const customerReviewUISchema = {
  	
   
 customer: {
@@ -54,30 +59,39 @@ rating: { 'ui:widget': "updown" , 'ui:placeholder': "Rating" },
  }
 
 
-const customerReviewHeaders = [
+
+
+
+
+
+export const customerReviewHeaders = [
  
- {property:"customer",title:"Customer" }
+ 
+ {property:"customer_displayName",title:"Customer" }
  ,
+ 
  {property:"review",title:"Review" }
  ,
+ 
  {property:"rating",title:"Rating" }
       
  ]
 
-/*
-export class CustomerReviewStore extends AppState{
-   constructor(url:string, headers:any, formSchema:any) {
-     super(url, headers, formSchema);
-   }
-}*/
-
-const data = new AppState('customerReviews', customerReviewHeaders, 
-	customerReviewSchema, customerReviewUISchema);
+export class CustomerReviewStore extends AppState {
+    constructor(url: string, headers: any, formSchema: any, uiSchema: any) {
+        super(url, headers, formSchema, uiSchema);
+    }
+}
 
 export default class CustomerReviewWrapper extends React.Component<any, any> {
+
+    data = new CustomerReviewStore('customerReviews', customerReviewHeaders,
+    createSchema(), customerReviewUISchema);
+
     render() {
         return (
-            <BaseCrudComponent data={data} />
+            <BaseCrudComponent data={this.data} />
         );
     }
 }
+

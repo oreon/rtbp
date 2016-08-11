@@ -5,10 +5,12 @@ import * as ReactDOM from 'react-dom';
 
 import BaseCrudComponent from '../commons/BaseComponent';
 import AppState from '../commons/AppState';
+import LookupService  from '../commons/LookupService';
 
 
-
- const appRoleSchema = {
+export function createSchema(){ 
+ 
+ return {
     title: "App Role",
     type: "object",
     required: [  'name' 
@@ -16,22 +18,25 @@ import AppState from '../commons/AppState';
     properties: {
     
 
-name: { type: "string", title: "Name" , },
+name:{ type: "string", title: "Name",  	
+},
 
 
 
-groups: { type: "string", title: "Groups" ,   
+groups:{ type: "string", title: "Groups",   
 
 
+	
 },
 
 
     
-        
     }
-};
+ };
 
- const appRoleUISchema = {
+}
+
+export const appRoleUISchema = {
  	
 
 name: {  'ui:placeholder': "Name" },
@@ -45,26 +50,33 @@ groups: {  'ui:placeholder': "Groups" },
  }
 
 
-const appRoleHeaders = [
+
+
+
+
+
+export const appRoleHeaders = [
+ 
  
  {property:"name",title:"Name" }
       
  ]
 
-/*
-export class AppRoleStore extends AppState{
-   constructor(url:string, headers:any, formSchema:any) {
-     super(url, headers, formSchema);
-   }
-}*/
-
-const data = new AppState('appRoles', appRoleHeaders, 
-	appRoleSchema, appRoleUISchema);
+export class AppRoleStore extends AppState {
+    constructor(url: string, headers: any, formSchema: any, uiSchema: any) {
+        super(url, headers, formSchema, uiSchema);
+    }
+}
 
 export default class AppRoleWrapper extends React.Component<any, any> {
+
+    data = new AppRoleStore('appRoles', appRoleHeaders,
+    createSchema(), appRoleUISchema);
+
     render() {
         return (
-            <BaseCrudComponent data={data} />
+            <BaseCrudComponent data={this.data} />
         );
     }
 }
+

@@ -8,7 +8,7 @@ import AppState from '../commons/AppState';
 import LookupService  from '../commons/LookupService';
 
 
- function createSchema(){ 
+export function createSchema(){ 
  
  return {
     title: "Employee",
@@ -18,35 +18,38 @@ import LookupService  from '../commons/LookupService';
     properties: {
     
 
-firstName: { type: "string", title: "First Name" , },
+firstName:{ type: "string", title: "First Name",  	
+},
 
 
 
-lastName: { type: "string", title: "Last Name" , },
+lastName:{ type: "string", title: "Last Name",  	
+},
 
 
 
-active: { type: "boolean", title: "Active" , },
+active:{ type: "boolean", title: "Active",  	
+},
 
 
 
-appUser: { type: "integer", title: "App User" ,   
+appUser:{ type: "integer", title: "App User",   
 
- 'enum': LookupService.getLookup('appUser').map(x => x.id   ),
- 'enumNames': LookupService.getLookup('appUser').map(x => x.displayName)
+ 'enum': LookupService.getLookup('appUsers').map(x => x.id   ),
+ 'enumNames': LookupService.getLookup('appUsers').map(x => x.displayName)
 
 
+	
 },
 
 
     
-        
     }
  };
 
 }
 
- const employeeUISchema = {
+export const employeeUISchema = {
  	
 
 firstName: {  'ui:placeholder': "First Name" },
@@ -68,15 +71,24 @@ appUser: {  'ui:placeholder': "App User" },
  }
 
 
-const employeeHeaders = [
+
+
+
+
+
+export const employeeHeaders = [
+ 
  
  {property:"firstName",title:"First Name" }
  ,
+ 
  {property:"lastName",title:"Last Name" }
  ,
+ 
  {property:"active",title:"Active" }
  ,
- {property:"appUser",title:"App User" }
+ 
+ {property:"appUser_displayName",title:"App User" }
       
  ]
 

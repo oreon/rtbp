@@ -8,7 +8,7 @@ import AppState from '../commons/AppState';
 import LookupService  from '../commons/LookupService';
 
 
- function createSchema(){ 
+export function createSchema(){ 
  
  return {
     title: "App Role",
@@ -18,24 +18,25 @@ import LookupService  from '../commons/LookupService';
     properties: {
     
 
-name: { type: "string", title: "Name" , },
+name:{ type: "string", title: "Name",  	
+},
 
 
 
-groups: { type: "string", title: "Groups" ,   
+groups:{ type: "string", title: "Groups",   
 
 
+	
 },
 
 
     
-        
     }
  };
 
 }
 
- const appRoleUISchema = {
+export const appRoleUISchema = {
  	
 
 name: {  'ui:placeholder': "Name" },
@@ -49,7 +50,13 @@ groups: {  'ui:placeholder': "Groups" },
  }
 
 
-const appRoleHeaders = [
+
+
+
+
+
+export const appRoleHeaders = [
+ 
  
  {property:"name",title:"Name" }
       

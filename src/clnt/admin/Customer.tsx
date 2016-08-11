@@ -5,10 +5,12 @@ import * as ReactDOM from 'react-dom';
 
 import BaseCrudComponent from '../commons/BaseComponent';
 import AppState from '../commons/AppState';
+import LookupService  from '../commons/LookupService';
 
 
-
- const customerSchema = {
+export function createSchema(){ 
+ 
+ return {
     title: "Customer",
     type: "object",
     required: [  'firstName' , 'lastName' 
@@ -16,21 +18,24 @@ import AppState from '../commons/AppState';
     properties: {
     
 
-firstName: { type: "string", title: "First Name" , },
+firstName:{ type: "string", title: "First Name",  	
+},
 
 
 
-lastName: { type: "string", title: "Last Name" , },
+lastName:{ type: "string", title: "Last Name",  	
+},
 
 
 
-customerType: { type: "string", title: "Customer Type" ,   
+customerType:{ type: "string", title: "Customer Type",   
 'enum' : [
 '','0' ,'1' ,'2'   
 ],
 'enumNames' : [
 'Select','BRONZE' ,'SILVER' ,'GOLD'   
 ]
+	
 },
 
 
@@ -51,7 +56,8 @@ customer: {
 
 
 
-notes: { type: "string", title: "Notes" , },
+notes:{ type: "string", title: "Notes",  	
+},
 
  
                  
@@ -71,16 +77,18 @@ customerOrder: {
 
 
 
-qty: { type: "integer", title: "Qty" , },
+qty:{ type: "integer", title: "Qty",  	
+},
 
 
 
-product: { type: "integer", title: "Product" ,   
+product:{ type: "integer", title: "Product",   
 
- 'enum': LookupService.getLookup('product').map(x => x.id   ),
- 'enumNames': LookupService.getLookup('product').map(x => x.displayName)
+ 'enum': LookupService.getLookup('products').map(x => x.id   ),
+ 'enumNames': LookupService.getLookup('products').map(x => x.displayName)
 
 
+	
 },
 
  
@@ -109,11 +117,13 @@ customer: {
 
 
 
-review: { type: "string", title: "Review" , },
+review:{ type: "string", title: "Review",  	
+},
 
 
 
-rating: { type: "integer", title: "Rating" , },
+rating:{ type: "integer", title: "Rating",  	
+},
 
  
                  
@@ -121,11 +131,12 @@ rating: { type: "integer", title: "Rating" , },
             }
         },
 
-        
     }
-};
+ };
 
- const customerUISchema = {
+}
+
+export const customerUISchema = {
  	
 
 firstName: {  'ui:placeholder': "First Name" },
@@ -202,30 +213,39 @@ rating: { 'ui:widget': "updown" , 'ui:placeholder': "Rating" },
  }
 
 
-const customerHeaders = [
+
+
+
+
+
+export const customerHeaders = [
+ 
  
  {property:"firstName",title:"First Name" }
  ,
+ 
  {property:"lastName",title:"Last Name" }
  ,
+ 
  {property:"customerType",title:"Customer Type" }
       
  ]
 
-/*
-export class CustomerStore extends AppState{
-   constructor(url:string, headers:any, formSchema:any) {
-     super(url, headers, formSchema);
-   }
-}*/
-
-const data = new AppState('customers', customerHeaders, 
-	customerSchema, customerUISchema);
+export class CustomerStore extends AppState {
+    constructor(url: string, headers: any, formSchema: any, uiSchema: any) {
+        super(url, headers, formSchema, uiSchema);
+    }
+}
 
 export default class CustomerWrapper extends React.Component<any, any> {
+
+    data = new CustomerStore('customers', customerHeaders,
+    createSchema(), customerUISchema);
+
     render() {
         return (
-            <BaseCrudComponent data={data} />
+            <BaseCrudComponent data={this.data} />
         );
     }
 }
+

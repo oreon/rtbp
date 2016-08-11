@@ -8,7 +8,7 @@ import AppState from '../commons/AppState';
 import LookupService  from '../commons/LookupService';
 
 
- function createSchema(){ 
+export function createSchema(){ 
  
  return {
     title: "Customer Review",
@@ -24,21 +24,22 @@ customer: {
 
 
 
-review: { type: "string", title: "Review" , },
+review:{ type: "string", title: "Review",  	
+},
 
 
 
-rating: { type: "integer", title: "Rating" , },
+rating:{ type: "integer", title: "Rating",  	
+},
 
 
     
-        
     }
  };
 
 }
 
- const customerReviewUISchema = {
+export const customerReviewUISchema = {
  	
   
 customer: {
@@ -58,12 +59,20 @@ rating: { 'ui:widget': "updown" , 'ui:placeholder': "Rating" },
  }
 
 
-const customerReviewHeaders = [
+
+
+
+
+
+export const customerReviewHeaders = [
  
- {property:"customer",title:"Customer" }
+ 
+ {property:"customer_displayName",title:"Customer" }
  ,
+ 
  {property:"review",title:"Review" }
  ,
+ 
  {property:"rating",title:"Rating" }
       
  ]

@@ -14,6 +14,8 @@ export default class AppState {
     @observable is_loading = true
     @observable is_saving = false
 
+    @observable mode = 'L';
+
     @observable next = null;
     @observable prev = null;
     @observable count = 0;
@@ -72,6 +74,21 @@ export default class AppState {
             });
     }
 
+    loadById(id) {
+        let url = this.url + "Writable" + "/" + id;
+        axios
+            .get(url)
+            .then(response => {
+                //console.log(response);
+                let data: any = response.data
+                this.selectedPost = data
+                this.is_loading = false
+                this.next = data.next,
+                    this.prev = data.previous,
+                    this.count = data.count;
+            });
+    }
+
     public goNext = () => { this.load(this.next); }
 
     public goPrev = () => { this.load(this.prev); }
@@ -107,6 +124,7 @@ export default class AppState {
             this.posts.forEach((item, i) => { if (item.id == id) this.posts[i] = entity });
 
         this.selectedPost = {}
+        this.mode = 'L'
     }
 
     public selectedPostJS = () => {
@@ -115,12 +133,24 @@ export default class AppState {
         return toJS(this.selectedPost)
     }
 
+    public selectPostById = (id) => {
+       this.mode = 'E'
+       this.loadById(id);
+    }
 
-    public selectPost = (post) => {
-        this.is_saving = true;
-        console.log("called " + post);
+    public selectPostView = (post) => {
+        this.mode = 'V'
         this.selectedPost = post;
     }
+
+    public selectPost = (post) => {
+        this.mode = 'E'
+        this.selectedPost = post;
+    }
+
+   public gotoEdit = () => { this.mode = 'E' }
+   public gotoList = () => { this.mode = 'L' }
+
 
     removePost(post) {
         // deleteObject({ bucket: config.cosmicjs.bucket }, { slug: post.slug }, (err, res) => {

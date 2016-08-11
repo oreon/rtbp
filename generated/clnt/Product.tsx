@@ -8,7 +8,7 @@ import AppState from '../commons/AppState';
 import LookupService  from '../commons/LookupService';
 
 
- function createSchema(){ 
+export function createSchema(){ 
  
  return {
     title: "Product",
@@ -18,19 +18,22 @@ import LookupService  from '../commons/LookupService';
     properties: {
     
 
-name: { type: "string", title: "Name" , },
+name:{ type: "string", title: "Name",  	
+},
 
 
 
-price: { type: "number", title: "Price" , },
+price:{ type: "number", title: "Price",  	
+},
 
 
 
-image: { type: "string", title: "Image" , },
+image:{ type: "string", title: "Image",   "format": "data-url"	
+},
 
 
 
-categorys: { type: "array", title: "Categorys" ,   
+categorys:{ type: "array", title: "Categorys",   
 
     "items":{
  'enum': LookupService.getLookup('categorys').map(x => x.id .toString()  ),
@@ -38,21 +41,22 @@ categorys: { type: "array", title: "Categorys" ,
     },
     "uniqueItems": true
 
+	
 },
 
 
 
-displayTill: { type: "string", title: "Display Till" , },
+displayTill:{ type: "string", title: "Display Till",   "format": "date"	
+},
 
 
     
-        
     }
  };
 
 }
 
- const productUISchema = {
+export const productUISchema = {
  	
 
 name: {  'ui:placeholder': "Name" },
@@ -78,14 +82,23 @@ displayTill: {  'ui:placeholder': "Display Till" },
  }
 
 
-const productHeaders = [
+
+
+
+
+
+export const productHeaders = [
+ 
  
  {property:"name",title:"Name" }
  ,
+ 
  {property:"price",title:"Price" }
  ,
+ 
  {property:"image",title:"Image" }
  ,
+ 
  {property:"displayTill",title:"Display Till" }
       
  ]

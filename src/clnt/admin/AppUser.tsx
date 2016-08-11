@@ -5,11 +5,12 @@ import * as ReactDOM from 'react-dom';
 
 import BaseCrudComponent from '../commons/BaseComponent';
 import AppState from '../commons/AppState';
-import LookupService from '../commons/LookupService'
+import LookupService  from '../commons/LookupService';
 
 
-
- const appUserSchema = {
+export function createSchema(){ 
+ 
+ return {
     title: "App User",
     type: "object",
     required: [  'userName' , 'password' 
@@ -17,19 +18,22 @@ import LookupService from '../commons/LookupService'
     properties: {
     
 
-userName: { type: "string", title: "User Name" , },
+userName:{ type: "string", title: "User Name",  	
+},
 
 
 
-password: { type: "string", title: "Password" , },
+password:{ type: "string", title: "Password",  	
+},
 
 
 
-enabled: { type: "boolean", title: "Enabled" , },
+enabled:{ type: "boolean", title: "Enabled",  	
+},
 
 
 
-groups: { type: "array", title: "Groups" ,   
+groups:{ type: "array", title: "Groups",   
 
     "items":{
  'enum': LookupService.getLookup('groups').map(x => x.id .toString()  ),
@@ -37,15 +41,17 @@ groups: { type: "array", title: "Groups" ,
     },
     "uniqueItems": true
 
+	
 },
 
 
     
-        
     }
-};
+ };
 
- const appUserUISchema = {
+}
+
+export const appUserUISchema = {
  	
 
 userName: {  'ui:placeholder': "User Name" },
@@ -67,30 +73,39 @@ groups: {  'ui:placeholder': "Groups" },
  }
 
 
-const appUserHeaders = [
+
+
+
+
+
+export const appUserHeaders = [
+ 
  
  {property:"userName",title:"User Name" }
  ,
+ 
  {property:"password",title:"Password" }
  ,
+ 
  {property:"enabled",title:"Enabled" }
       
  ]
 
-/*
-export class AppUserStore extends AppState{
-   constructor(url:string, headers:any, formSchema:any) {
-     super(url, headers, formSchema);
-   }
-}*/
-
-const data = new AppState('appUsers', appUserHeaders, 
-	appUserSchema, appUserUISchema);
+export class AppUserStore extends AppState {
+    constructor(url: string, headers: any, formSchema: any, uiSchema: any) {
+        super(url, headers, formSchema, uiSchema);
+    }
+}
 
 export default class AppUserWrapper extends React.Component<any, any> {
+
+    data = new AppUserStore('appUsers', appUserHeaders,
+    createSchema(), appUserUISchema);
+
     render() {
         return (
-            <BaseCrudComponent data={data} />
+            <BaseCrudComponent data={this.data} />
         );
     }
 }
+

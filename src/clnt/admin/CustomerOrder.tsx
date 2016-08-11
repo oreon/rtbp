@@ -5,10 +5,12 @@ import * as ReactDOM from 'react-dom';
 
 import BaseCrudComponent from '../commons/BaseComponent';
 import AppState from '../commons/AppState';
+import LookupService  from '../commons/LookupService';
 
 
-
- const customerOrderSchema = {
+export function createSchema(){ 
+ 
+ return {
     title: "Customer Order",
     type: "object",
     required: [ 
@@ -22,7 +24,8 @@ customer: {
 
 
 
-notes: { type: "string", title: "Notes" , },
+notes:{ type: "string", title: "Notes",  	
+},
 
 
     
@@ -42,16 +45,18 @@ customerOrder: {
 
 
 
-qty: { type: "integer", title: "Qty" , },
+qty:{ type: "integer", title: "Qty",  	
+},
 
 
 
-product: { type: "integer", title: "Product" ,   
+product:{ type: "integer", title: "Product",   
 
- 'enum': LookupService.getLookup('product').map(x => x.id   ),
- 'enumNames': LookupService.getLookup('product').map(x => x.displayName)
+ 'enum': LookupService.getLookup('products').map(x => x.id   ),
+ 'enumNames': LookupService.getLookup('products').map(x => x.displayName)
 
 
+	
 },
 
  
@@ -60,11 +65,12 @@ product: { type: "integer", title: "Product" ,
             }
         },
 
-        
     }
-};
+ };
 
- const customerOrderUISchema = {
+}
+
+export const customerOrderUISchema = {
  	
   
 customer: {
@@ -101,28 +107,36 @@ product: {  'ui:placeholder': "Product" },
  }
 
 
-const customerOrderHeaders = [
+
+
+
+
+
+export const customerOrderHeaders = [
  
- {property:"customer",title:"Customer" }
+ 
+ {property:"customer_displayName",title:"Customer" }
  ,
+ 
  {property:"notes",title:"Notes" }
       
  ]
 
-/*
-export class CustomerOrderStore extends AppState{
-   constructor(url:string, headers:any, formSchema:any) {
-     super(url, headers, formSchema);
-   }
-}*/
-
-const data = new AppState('customerOrders', customerOrderHeaders, 
-	customerOrderSchema, customerOrderUISchema);
+export class CustomerOrderStore extends AppState {
+    constructor(url: string, headers: any, formSchema: any, uiSchema: any) {
+        super(url, headers, formSchema, uiSchema);
+    }
+}
 
 export default class CustomerOrderWrapper extends React.Component<any, any> {
+
+    data = new CustomerOrderStore('customerOrders', customerOrderHeaders,
+    createSchema(), customerOrderUISchema);
+
     render() {
         return (
-            <BaseCrudComponent data={data} />
+            <BaseCrudComponent data={this.data} />
         );
     }
 }
+
