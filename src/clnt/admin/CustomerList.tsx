@@ -45,14 +45,22 @@ export class CustomerList extends React.Component<any, any> {
     }
   }
 
+ 
+
   renderExtra(record: any) {
     return (<tr key={record.id + "E"}>
       <td colSpan={3} key='DET'> 
 		 {(record.customerOrders) &&
-          <CustomerOrderList records={record.customerOrders} nested={true}  container={'customer_displayName'} />
+          <CustomerOrderList records={record.customerOrders} 
+          nested={true}
+          containerId={record.id}
+          container={'customer_displayName'} 
+          prev={this.props.location.pathName}
+          />
          }
 		 {(record.customerReviews) &&
-          <CustomerReviewList records={record.customerReviews} nested={true}  container={'customer_displayName'} />
+          <CustomerReviewList records={record.customerReviews} nested={true} 
+           container={'customer_displayName'}  containerId={record.id} />
          }
 		  
       
@@ -73,7 +81,7 @@ export class CustomerList extends React.Component<any, any> {
         <SimpleList headers= {customerHeaders} editLink={'CustomerEdit'}
           renderExtra = {this.renderExtra}
           records = { records } nested={this.props.nested} 
-           container={this.props.container}
+           container={this.props.container}  
         />
       </div>
     )

@@ -2,11 +2,13 @@
 	 import * as React from 'react';
 	import * as ReactDOM from 'react-dom';
 	import { Router, Route, hashHistory, Link  } from 'react-router'
+  import { Layout} from '../index'
 
 export class AdminView extends React.Component<{}, {}> {
   render() {
     return (
-      <div>
+     <Layout>
+     <div>
 	 	
   <h1> domain </h1>
   <ul> 
@@ -47,6 +49,7 @@ export class AdminView extends React.Component<{}, {}> {
    <hr/>
  
 	  </div>
+    </Layout>
 	 )}
 }	 
  

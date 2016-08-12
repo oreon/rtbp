@@ -11,7 +11,7 @@ import DataService from '../commons/httpService';
 import { browserHistory, hashHistory } from 'react-router'
 
 import {productHeaders, createSchema, productUISchema} from './Product'
-
+  import { Layout} from '../index'
 
 
 
@@ -42,13 +42,8 @@ export class ProductList extends React.Component<any, any> {
   }
 
   renderExtra(record: any) {
-    return (<tr key={record.id + "E"}>
-      <td colSpan={3} key='DET'> 
-      	 
-      
-      </td>
-    </tr>)
-    //return null
+    
+    return null
   }
 
  render() {
@@ -59,6 +54,7 @@ export class ProductList extends React.Component<any, any> {
       return (<p>Loading...</p>)
 
     return (
+      <Layout>
       <div>
         <SimpleList headers= {productHeaders} editLink={'ProductEdit'}
           renderExtra = {this.renderExtra}
@@ -66,6 +62,7 @@ export class ProductList extends React.Component<any, any> {
            container={this.props.container}
         />
       </div>
+      </Layout>
     )
   }
 }

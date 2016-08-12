@@ -59,13 +59,19 @@ export class CategoryList extends React.Component<any, any> {
       return (<p>Loading...</p>)
 
     return (
+     <Layout>
       <div>
+         {  (records.length > 0 ) &&
         <SimpleList headers= {categoryHeaders} editLink={'CategoryEdit'}
           renderExtra = {this.renderExtra}
-          records = { records } nested={this.props.nested} 
-           container={this.props.container}
-        />
+          records = { records } nested={this.props.nested}
+          container={this.props.container} uneditable={this.props.uneditable}
+          containerId={this.props.containerId}
+          prev={this.props.prev}
+          />
+      }
       </div>
+      </Layout>
     )
   }
 }
@@ -75,13 +81,18 @@ export class CategoryView extends React.Component<any, any> {
   renderExtra(record: any) { <p> IN render </p> }
   render() {
     return (
+     <Layout>
       <p> IN render </p>
-    )
+      </Layout>
+    )	
 
     // <SimpleView  headers={this.props.params.parent} renderExtra={this.renderExtra}
     //   record={this.props.CategoryOrders}/>
   }
 }
+
+
+
 
 export class CategoryEdit extends React.Component<any, any> {
 
@@ -92,11 +103,17 @@ export class CategoryEdit extends React.Component<any, any> {
   }
 
   async onSubmit(formData) {
-    //formData[owner] = 1 
+  	if(container &&  this.props.params.parent)
+    	formData[container] = this.props.params.parent 
     try {
       await DataService.onSubmit('categorys', formData)
-      hashHistory.push('/admin/CategoryList?msg=success')
-      this.setState({ message: 'Record successfully created' })
+      
+      //if(!this.props.prev)
+     hashHistory.push('/admin/CategoryList?msg=success')
+      //else 
+      // hashHistory.push(this.props.prev)
+      
+      //this.setState({ message: 'Record successfully created' })
     } catch (error) {
       console.log(error);
       this.setState({ error: error.response.data, record: formData })
@@ -120,12 +137,14 @@ export class CategoryEdit extends React.Component<any, any> {
 
   render() {
     return (
+     <Layout>
       <div>
         {JSON.stringify(this.state.error) }
         <SimpleForm formData={this.state.record} currentError={this.state.error}
           formSchema={createSchema() }  uiSchema={categoryUISchema}
           onSubmit={this.onSubmit}  />
       </div>
+     </Layout>
     );
   }
 }

@@ -9,11 +9,15 @@ import Form from 'react-jsonschema-form';
 import DevTools from 'mobx-react-devtools';
 
 import { Router, Route, hashHistory, Link, browserHistory } from 'react-router'
+import IconButton from 'material-ui/IconButton';
 
 import * as _  from 'lodash';
 
 import {customerOrderHeaders} from '../admin/CustomerOrder'
 import {orderItemHeaders} from '../admin/OrderItem'
+
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+
 
 @observer
 export default class BaseCrudComponent extends React.Component<any, any> {
@@ -51,7 +55,7 @@ export default class BaseCrudComponent extends React.Component<any, any> {
 
 export class TableHeader extends React.Component<any, any>{
   render() {
-    return <th> {this.props.name} </th>
+    return <TableHeaderColumn> {this.props.name} </TableHeaderColumn>
   }
 }
 
@@ -62,28 +66,28 @@ export class CustomerList extends React.Component<any, any>{
 
   renderRow(record: any) {
     let cells = this.props.data.headers.map(x =>
-    { return <td  key={x.property}> {record[x.property]} </td> });
+    { return <TableRowColumn  key={x.property}> {record[x.property]} </TableRowColumn> });
 
     return (
-      <tr>
+      <TableRow>
         {cells}
-        <td> <button onClick={() => this.props.data.selectPost(record) }
-          >Edit Me</button></td>
-        <td> <button onClick={() => this.props.data.selectPostView(record) }
-          >View</button></td>
-      </tr>
+        <TableRowColumn> <button onClick={() => this.props.data.selectPost(record) }
+          >Edit Me</button></TableRowColumn>
+        <TableRowColumn> <button onClick={() => this.props.data.selectPostView(record) }
+          >View</button></TableRowColumn>
+      </TableRow>
     )
   }
 
   renderExtra(record: any) {
-    return (<tr key={record.id + "C"}>
-      <td> hi there </td>  <td> {record.displayName} </td>
-    </tr>)
+    return (<TableRow key={record.id + "C"}>
+      <TableRowColumn> hi there </TableRowColumn>  <TableRowColumn> {record.displayName} </TableRowColumn>
+    </TableRow>)
   }
 
   render() {
 
-    let headers = this.props.data.headers.map(x => { return <th key={x.property}>{x.title} </th> });
+    let headers = this.props.data.headers.map(x => { return <TableHeaderColumn key={x.property}>{x.title} </TableHeaderColumn> });
 
     let arr = this.props.nestedRecords ? this.props.nestedRecords : this.props.data.posts
     let rows = arr.map(customer => {
@@ -102,14 +106,14 @@ export class CustomerList extends React.Component<any, any>{
           Add
         </button>
 
-        <table  className="table-striped" >
-          <tbody>
-            <tr>
+        <Table  className="table-striped" >
+          <TableBody>
+            <TableRow>
               {headers}
-            </tr>
+            </TableRow>
             {rows}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
 
         {  (this.props.data.next != null) &&
           <a  onClick={this.props.data.goNext }> Next </a>  }
@@ -229,25 +233,30 @@ export class SimpleList extends React.Component<any, any>{
 
   constructor(props) {
     super(props);
+    
     this.editLink = '/admin/' + this.props.editLink
   }
 
   renderRow(record: any, headers) {
 
-    console.log(headers);
-
-    let cells = headers.map(x =>
-    { return <td  key={x.property}> {record[x.property]} </td> });
-
-    let editLink = this.editLink + "/" + record.id + "/" + this.props.parent;
+   let cells = headers.map(x =>
+    { return <TableRowColumn  key={x.property}> {record[x.property]} </TableRowColumn> });
+    let prnt = (this.props.parent) ?   "/" + this.props.parent :  ""
+    let editLink = this.editLink + "/" + record.id + prnt;
+    
 
     return (
-      <tr  key={record.id}>
+      <TableRow  key={record.id}>
         {cells}
-         {(!this.props.nested) && 
-        <td key='edit'> <Link to={editLink}>Edit</Link> </td>
+         {(!this.props.uneditable) && 
+        <TableRowColumn key='edit'> 
+       
+        <Link to={{pathname: editLink, query: { prev: this.props.prev }}}>Edit</Link>
+       
+        
+         </TableRowColumn>
          }
-      </tr>
+      </TableRow>
     )
   }
 
@@ -260,31 +269,38 @@ export class SimpleList extends React.Component<any, any>{
      let headers = this.props.headers
     .filter( x => { return x.property != this.props.container } )
     
-     let ths = headers.map(x => { return <th key={x.property}>{x.title} </th> });
+     let ths = headers.map(x => { return <TableHeaderColumn key={x.property}>{x.title} </TableHeaderColumn> });
 
     let mainrows = this.props.records.map(customer => this.renderRow(customer, headers));
 
     let extras = this.props.records.map(customer => this.renderExtra(customer));
 
     let rows = _.zip(mainrows, extras)
+
+    let addLink = this.editLink;
+
+    if(this.props.containerId){
+      addLink = this.editLink + "/0/" + this.props.containerId
+    }
+
     return (
 
       <div>
-
         {this.props.renderExtra({}) }
 
-        {(!this.props.nested) && 
-        <Link to={this.editLink}>Add</Link>
+        {(!this.props.uneditable) && 
+        <Link to={addLink}>Add</Link>
         }
-
-        <table  className="table-striped" >
-          <tbody>
-            <tr key="this.props.headers">
+      
+        <br/>
+        <Table  className="table-striped" >
+          <TableBody>
+            <TableRow key="this.props.headers">
               {ths}
-            </tr>
+            </TableRow>
             {rows}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     )
   }

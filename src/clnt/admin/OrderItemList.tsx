@@ -60,11 +60,15 @@ export class OrderItemList extends React.Component<any, any> {
 
     return (
       <div>
+
+      {  (records.length > 0 ) &&
         <SimpleList headers= {orderItemHeaders} editLink={'OrderItemEdit'}
           renderExtra = {this.renderExtra}
           records = { records } nested={this.props.nested} 
            container={this.props.container}
+           uneditable={this.props.uneditable}
         />
+      }
       </div>
     )
   }
