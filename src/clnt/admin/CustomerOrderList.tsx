@@ -9,13 +9,30 @@ import AppState from '../commons/AppState';
 import LookupService  from '../commons/LookupService';
 import DataService from '../commons/httpService';
 import { browserHistory, hashHistory } from 'react-router'
+import {Layout} from '../index' 
+
+import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
+
+
 
 import {customerOrderHeaders, createSchema, customerOrderUISchema} from './CustomerOrder'
 
 
-import { OrderItemList} from './OrderItemList';
+	import { OrderItemList} from './OrderItemList';
 
 
+
+
+export class CustomerOrderListWrapper extends React.Component<any, any> {
+
+  render() {
+    return (
+      <Layout>
+       <CustomerOrderList/>
+      </Layout>
+    )
+  }
+}
 
 export class CustomerOrderList extends React.Component<any, any> {
 
@@ -35,8 +52,8 @@ export class CustomerOrderList extends React.Component<any, any> {
   componentDidMount() {
     console.log("waiting for customerOrders")
     try {
-      if (!this.props.records)
-        this.load();
+      if(!this.props.records)
+      	this.load();
     } catch (err) {
       this.response.data = []
       console.log(err);
@@ -44,29 +61,44 @@ export class CustomerOrderList extends React.Component<any, any> {
   }
 
   renderExtra(record: any) {
-    return (<tr key={record.id + "E"}>
-      <td colSpan={3} key='DET'>
-        {(record.orderItems) &&
-          <OrderItemList records={record.orderItems} nested={true}  uneditable={true}
-            container={'customerOrder_displayName'} />
-        }
+  	
+  		
+    if ( !( record.orderItems ) )
+      return null;
+      
+     if ( !( record.orderItems.length ) )
+      return null;
 
-
-      </td>
-    </tr>)
-    //return null
+ 
+    return (<TableRow key={record.id + "E"}>
+      <TableRowColumn colSpan={3} key='DET'> 
+		 {(record.orderItems) &&
+          <OrderItemList records={record.orderItems} 
+          nested={true}  
+          container={'customerOrder_displayName'}
+          containerId={record.id}
+           prev={this.props.location?this.props.location.pathName:null }
+           uneditable={true} 
+           />
+         }
+		  
+      
+      </TableRowColumn>
+    </TableRow>)
+    
   }
 
-  render() {
-
+ render() {
+    
     let records = this.props.nested ? this.props.records : this.state.records
 
-    if (!records)
+    if(!records )
       return (<p>Loading...</p>)
 
     return (
+     
       <div>
-      {this.props.prev}
+         {  (records.length > 0 ) &&
         <SimpleList headers= {customerOrderHeaders} editLink={'CustomerOrderEdit'}
           renderExtra = {this.renderExtra}
           records = { records } nested={this.props.nested}
@@ -74,7 +106,9 @@ export class CustomerOrderList extends React.Component<any, any> {
           containerId={this.props.containerId}
           prev={this.props.prev}
           />
+      }
       </div>
+      
     )
   }
 }
@@ -84,15 +118,20 @@ export class CustomerOrderView extends React.Component<any, any> {
   renderExtra(record: any) { <p> IN render </p> }
   render() {
     return (
+     <Layout>
       <p> IN render </p>
-    )
+      </Layout>
+    )	
 
     // <SimpleView  headers={this.props.params.parent} renderExtra={this.renderExtra}
     //   record={this.props.CustomerOrderOrders}/>
   }
 }
 
+
 export const container = 'customer'
+
+
 
 export class CustomerOrderEdit extends React.Component<any, any> {
 
@@ -103,29 +142,31 @@ export class CustomerOrderEdit extends React.Component<any, any> {
   }
 
   async onSubmit(formData) {
-    if(this.props.params.parent)
-      formData[container] = this.props.params.parent
+  	if(container &&  this.props.params.parent)
+    	formData[container] = this.props.params.parent 
     try {
       await DataService.onSubmit('customerOrders', formData)
-      //if(this.props.params.)
-      hashHistory.push('/admin/CustomerOrderList?msg=success')
+      
+      //if(!this.props.prev)
+     hashHistory.push('/admin/CustomerOrderList?msg=success')
       //else 
-      // hashHistory.push(location.)
-
-      //this.props.location.pathname
-      this.setState({ message: 'Record successfully created' })
+      // hashHistory.push(this.props.prev)
+      
+      //this.setState({ message: 'Record successfully created' })
     } catch (error) {
       console.log(error);
       this.setState({ error: error.response.data, record: formData })
     }
   }
 
-  async load() {
-    let id = this.props.params.id;
-    if (id && id > 0) {
+
+  async componentDidMount() {
+    if (this.props.params.id) {
       try {
-        let record = await DataService.loadById('customerOrders', id)
-        this.setState({ record: record })
+        this.setState({
+          record: await DataService.loadById('customerOrders',
+            this.props.params.id)
+        })
       } catch (error) {
         console.log(error);
         this.setState({ error: error })
@@ -133,18 +174,16 @@ export class CustomerOrderEdit extends React.Component<any, any> {
     }
   }
 
-  componentDidMount() {
-    this.load();
-  }
-
   render() {
     return (
+     <Layout>
       <div>
         {JSON.stringify(this.state.error) }
         <SimpleForm formData={this.state.record} currentError={this.state.error}
           formSchema={createSchema() }  uiSchema={customerOrderUISchema}
           onSubmit={this.onSubmit}  />
       </div>
+     </Layout>
     );
   }
 }

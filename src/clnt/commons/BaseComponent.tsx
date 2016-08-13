@@ -266,6 +266,8 @@ export class SimpleList extends React.Component<any, any>{
 
   render() {
 
+    let styles = this.getStyles();
+
      let headers = this.props.headers
     .filter( x => { return x.property != this.props.container } )
     
@@ -293,9 +295,9 @@ export class SimpleList extends React.Component<any, any>{
         }
       
         <br/>
-        <Table  className="table-striped" >
+        <Table  >
           <TableBody>
-            <TableRow key="this.props.headers">
+            <TableRow key="this.props.headers" style={styles.header} >
               {ths}
             </TableRow>
             {rows}
@@ -303,6 +305,27 @@ export class SimpleList extends React.Component<any, any>{
         </Table>
       </div>
     )
+  }
+
+  getStyles () {
+    return {
+      root: {
+       // paddingTop: Spacing.desktopKeylineIncrement
+      },
+      header: {
+        fontWeight: 'normal',
+        fontSize: 13,
+        background: this.props.nested ? 'lightblue': 'lightgreen'
+      },
+      headerRight: {
+        fontWeight: 'normal',
+        fontSize: 13,
+       // paddingLeft: scrollBarVisible ? 24 - (window.scrollbarWidth / 2) : 24
+      },
+      row: {
+        borderBottom: '0px'
+      }
+    }
   }
 }
 

@@ -9,11 +9,28 @@ import AppState from '../commons/AppState';
 import LookupService  from '../commons/LookupService';
 import DataService from '../commons/httpService';
 import { browserHistory, hashHistory } from 'react-router'
+import {Layout} from '../index' 
+
+import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
+
+
 
 import {employeeHeaders, createSchema, employeeUISchema} from './Employee'
 
 
 
+
+
+export class EmployeeListWrapper extends React.Component<any, any> {
+
+  render() {
+    return (
+      <Layout>
+       <EmployeeList/>
+      </Layout>
+    )
+  }
+}
 
 export class EmployeeList extends React.Component<any, any> {
 
@@ -42,13 +59,9 @@ export class EmployeeList extends React.Component<any, any> {
   }
 
   renderExtra(record: any) {
-    return (<tr key={record.id + "E"}>
-      <td colSpan={3} key='DET'> 
-      	 
-      
-      </td>
-    </tr>)
-    //return null
+  	
+  		return null
+  	
   }
 
  render() {
@@ -59,7 +72,7 @@ export class EmployeeList extends React.Component<any, any> {
       return (<p>Loading...</p>)
 
     return (
-     <Layout>
+     
       <div>
          {  (records.length > 0 ) &&
         <SimpleList headers= {employeeHeaders} editLink={'EmployeeEdit'}
@@ -71,7 +84,7 @@ export class EmployeeList extends React.Component<any, any> {
           />
       }
       </div>
-      </Layout>
+      
     )
   }
 }
@@ -92,7 +105,7 @@ export class EmployeeView extends React.Component<any, any> {
 }
 
 
-export const container = 
+export const container = null
 
 
 

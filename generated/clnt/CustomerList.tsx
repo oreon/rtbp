@@ -9,6 +9,11 @@ import AppState from '../commons/AppState';
 import LookupService  from '../commons/LookupService';
 import DataService from '../commons/httpService';
 import { browserHistory, hashHistory } from 'react-router'
+import {Layout} from '../index' 
+
+import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
+
+
 
 import {customerHeaders, createSchema, customerUISchema} from './Customer'
 
@@ -18,6 +23,18 @@ import {customerHeaders, createSchema, customerUISchema} from './Customer'
 	import { CustomerReviewList} from './CustomerReviewList';
 
 
+
+
+export class CustomerListWrapper extends React.Component<any, any> {
+
+  render() {
+    return (
+      <Layout>
+       <CustomerList/>
+      </Layout>
+    )
+  }
+}
 
 export class CustomerList extends React.Component<any, any> {
 
@@ -46,14 +63,23 @@ export class CustomerList extends React.Component<any, any> {
   }
 
   renderExtra(record: any) {
-    return (<tr key={record.id + "E"}>
-      <td colSpan={3} key='DET'> 
+  	
+  		
+    if ( !( record.customerOrders || record.customerReviews ) )
+      return null;
+      
+     if ( !( record.customerOrders.length || record.customerReviews.length ) )
+      return null;
+
+ 
+    return (<TableRow key={record.id + "E"}>
+      <TableRowColumn colSpan={3} key='DET'> 
 		 {(record.customerOrders) &&
           <CustomerOrderList records={record.customerOrders} 
           nested={true}  
           container={'customer_displayName'}
           containerId={record.id}
-          prev={this.props.location.pathName}
+           prev={this.props.location?this.props.location.pathName:null }
           
            />
          }
@@ -62,15 +88,15 @@ export class CustomerList extends React.Component<any, any> {
           nested={true}  
           container={'customer_displayName'}
           containerId={record.id}
-          prev={this.props.location.pathName}
+           prev={this.props.location?this.props.location.pathName:null }
            uneditable={true} 
            />
          }
 		  
       
-      </td>
-    </tr>)
-    //return null
+      </TableRowColumn>
+    </TableRow>)
+    
   }
 
  render() {
@@ -81,7 +107,7 @@ export class CustomerList extends React.Component<any, any> {
       return (<p>Loading...</p>)
 
     return (
-     <Layout>
+     
       <div>
          {  (records.length > 0 ) &&
         <SimpleList headers= {customerHeaders} editLink={'CustomerEdit'}
@@ -93,7 +119,7 @@ export class CustomerList extends React.Component<any, any> {
           />
       }
       </div>
-      </Layout>
+      
     )
   }
 }
@@ -114,7 +140,7 @@ export class CustomerView extends React.Component<any, any> {
 }
 
 
-export const container = 
+export const container = null
 
 
 

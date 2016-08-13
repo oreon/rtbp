@@ -9,6 +9,11 @@ import AppState from '../commons/AppState';
 import LookupService  from '../commons/LookupService';
 import DataService from '../commons/httpService';
 import { browserHistory, hashHistory } from 'react-router'
+import {Layout} from '../index' 
+
+import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
+
+
 
 import {customerOrderHeaders, createSchema, customerOrderUISchema} from './CustomerOrder'
 
@@ -16,6 +21,18 @@ import {customerOrderHeaders, createSchema, customerOrderUISchema} from './Custo
 	import { OrderItemList} from './OrderItemList';
 
 
+
+
+export class CustomerOrderListWrapper extends React.Component<any, any> {
+
+  render() {
+    return (
+      <Layout>
+       <CustomerOrderList/>
+      </Layout>
+    )
+  }
+}
 
 export class CustomerOrderList extends React.Component<any, any> {
 
@@ -44,22 +61,31 @@ export class CustomerOrderList extends React.Component<any, any> {
   }
 
   renderExtra(record: any) {
-    return (<tr key={record.id + "E"}>
-      <td colSpan={3} key='DET'> 
+  	
+  		
+    if ( !( record.orderItems ) )
+      return null;
+      
+     if ( !( record.orderItems.length ) )
+      return null;
+
+ 
+    return (<TableRow key={record.id + "E"}>
+      <TableRowColumn colSpan={3} key='DET'> 
 		 {(record.orderItems) &&
           <OrderItemList records={record.orderItems} 
           nested={true}  
           container={'customerOrder_displayName'}
           containerId={record.id}
-          prev={this.props.location.pathName}
+           prev={this.props.location?this.props.location.pathName:null }
            uneditable={true} 
            />
          }
 		  
       
-      </td>
-    </tr>)
-    //return null
+      </TableRowColumn>
+    </TableRow>)
+    
   }
 
  render() {
@@ -70,7 +96,7 @@ export class CustomerOrderList extends React.Component<any, any> {
       return (<p>Loading...</p>)
 
     return (
-     <Layout>
+     
       <div>
          {  (records.length > 0 ) &&
         <SimpleList headers= {customerOrderHeaders} editLink={'CustomerOrderEdit'}
@@ -82,7 +108,7 @@ export class CustomerOrderList extends React.Component<any, any> {
           />
       }
       </div>
-      </Layout>
+      
     )
   }
 }
@@ -102,6 +128,8 @@ export class CustomerOrderView extends React.Component<any, any> {
   }
 }
 
+
+export const container = 'customer'
 
 
 

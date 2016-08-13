@@ -9,11 +9,28 @@ import AppState from '../commons/AppState';
 import LookupService  from '../commons/LookupService';
 import DataService from '../commons/httpService';
 import { browserHistory, hashHistory } from 'react-router'
+import {Layout} from '../index' 
+
+import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
+
+
 
 import {appUserHeaders, createSchema, appUserUISchema} from './AppUser'
 
 
 
+
+
+export class AppUserListWrapper extends React.Component<any, any> {
+
+  render() {
+    return (
+      <Layout>
+       <AppUserList/>
+      </Layout>
+    )
+  }
+}
 
 export class AppUserList extends React.Component<any, any> {
 
@@ -42,13 +59,9 @@ export class AppUserList extends React.Component<any, any> {
   }
 
   renderExtra(record: any) {
-    return (<tr key={record.id + "E"}>
-      <td colSpan={3} key='DET'> 
-      	 
-      
-      </td>
-    </tr>)
-    //return null
+  	
+  		return null
+  	
   }
 
  render() {
@@ -59,13 +72,19 @@ export class AppUserList extends React.Component<any, any> {
       return (<p>Loading...</p>)
 
     return (
+     
       <div>
+         {  (records.length > 0 ) &&
         <SimpleList headers= {appUserHeaders} editLink={'AppUserEdit'}
           renderExtra = {this.renderExtra}
-          records = { records } nested={this.props.nested} 
-           container={this.props.container}
-        />
+          records = { records } nested={this.props.nested}
+          container={this.props.container} uneditable={this.props.uneditable}
+          containerId={this.props.containerId}
+          prev={this.props.prev}
+          />
+      }
       </div>
+      
     )
   }
 }
@@ -75,13 +94,20 @@ export class AppUserView extends React.Component<any, any> {
   renderExtra(record: any) { <p> IN render </p> }
   render() {
     return (
+     <Layout>
       <p> IN render </p>
-    )
+      </Layout>
+    )	
 
     // <SimpleView  headers={this.props.params.parent} renderExtra={this.renderExtra}
     //   record={this.props.AppUserOrders}/>
   }
 }
+
+
+export const container = null
+
+
 
 export class AppUserEdit extends React.Component<any, any> {
 
@@ -92,11 +118,17 @@ export class AppUserEdit extends React.Component<any, any> {
   }
 
   async onSubmit(formData) {
-    //formData[owner] = 1 
+  	if(container &&  this.props.params.parent)
+    	formData[container] = this.props.params.parent 
     try {
       await DataService.onSubmit('appUsers', formData)
-      hashHistory.push('/admin/AppUserList?msg=success')
-      this.setState({ message: 'Record successfully created' })
+      
+      //if(!this.props.prev)
+     hashHistory.push('/admin/AppUserList?msg=success')
+      //else 
+      // hashHistory.push(this.props.prev)
+      
+      //this.setState({ message: 'Record successfully created' })
     } catch (error) {
       console.log(error);
       this.setState({ error: error.response.data, record: formData })
@@ -120,12 +152,14 @@ export class AppUserEdit extends React.Component<any, any> {
 
   render() {
     return (
+     <Layout>
       <div>
         {JSON.stringify(this.state.error) }
         <SimpleForm formData={this.state.record} currentError={this.state.error}
           formSchema={createSchema() }  uiSchema={appUserUISchema}
           onSubmit={this.onSubmit}  />
       </div>
+     </Layout>
     );
   }
 }
