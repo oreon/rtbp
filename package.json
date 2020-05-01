@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Boilerplate for MobX + React project with Typescript, ES6 compilation and hot code reloading",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -37,6 +39,8 @@
     "react-dom": "^15.1.0",
     "react-json-table": "^0.1.1",
     "react-jsonschema": "^0.4.1",
-    "react-jsonschema-form": "^0.38.0"
-  }
+    "react-jsonschema-form": "^0.38.0",
+    "snyk": "^1.316.1"
+  },
+  "snyk": true
 }
