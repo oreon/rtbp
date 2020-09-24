@@ -33,10 +33,10 @@
     "mobx": "^2.3.2",
     "mobx-react": "^3.3.1",
     "mobx-react-devtools": "^4.2.0",
-    "react": "^15.1.0",
-    "react-dom": "^15.1.0",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0",
     "react-json-table": "^0.1.1",
-    "react-jsonschema": "^0.4.1",
+    "react-jsonschema": "^1.0.0",
     "react-jsonschema-form": "^0.38.0"
   }
 }
