@@ -36,7 +36,7 @@
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-json-table": "^0.1.1",
-    "react-jsonschema": "^0.4.1",
+    "react-jsonschema": "^1.0.0",
     "react-jsonschema-form": "^0.38.0"
   }
 }
